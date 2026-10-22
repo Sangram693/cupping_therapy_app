@@ -4,10 +4,10 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../app/di/providers.dart';
 import '../../../../app/router/route_names.dart';
-import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/services/app_color_service.dart';
 import '../../../../core/widgets/app_back_button.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../widgets/account_menu_tile.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -46,27 +46,26 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     } catch (error) {
       if (!mounted) return;
       setState(() {
-        _loadError = 'Unable to load account information: $error';
+        _loadError = AppLocalizations.of(context)!.unableToLoadAccount;
       });
     }
   }
 
   Future<void> _confirmLogout() async {
+    final l10n = AppLocalizations.of(context)!;
     final shouldLogOut = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Log out?'),
-        content: const Text(
-          'You will need to sign in again to access your account.',
-        ),
+        title: Text(l10n.logoutConfirmationTitle),
+        content: Text(l10n.logoutConfirmationMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: const Text('Cancel'),
+            child: Text(l10n.cancel),
           ),
           FilledButton(
             onPressed: () => Navigator.of(dialogContext).pop(true),
-            child: const Text('Log out'),
+            child: Text(l10n.logout),
           ),
         ],
       ),
@@ -85,18 +84,23 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         setState(() => _isLoggingOut = false);
         ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
-          ..showSnackBar(SnackBar(content: Text('Unable to log out: $error')));
+          ..showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.unableToLogout),
+            ),
+          );
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         leading: const AppBackButton(fallbackRouteName: RouteNames.home),
-        title: const Text('Profile & account'),
+        title: Text(l10n.profileAndAccount),
       ),
       body: SafeArea(
         top: false,
@@ -115,59 +119,59 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   loadError: _loadError,
                 ),
                 const SizedBox(height: AppDimensions.spacing24),
-                _SectionLabel(title: 'Your account'),
+                _SectionLabel(title: l10n.yourAccount),
                 const SizedBox(height: AppDimensions.spacing8),
                 if (_isSignedIn == true) ...[
                   AccountMenuTile(
                     icon: Icons.event_available_outlined,
-                    title: 'My Appointments',
+                    title: l10n.myAppointments,
                     onTap: () => context.pushNamed(RouteNames.appointments),
                   ),
                   AccountMenuTile(
                     icon: Icons.menu_book_outlined,
-                    title: 'My Training',
+                    title: l10n.myTraining,
                     onTap: () => context.pushNamed(RouteNames.training),
                   ),
                 ] else if (_isSignedIn == false) ...[
                   AccountMenuTile(
                     icon: Icons.login_rounded,
-                    title: 'Login',
-                    subtitle: 'Sign in to access your account.',
+                    title: l10n.login,
+                    subtitle: l10n.signInToAccessAccount,
                     onTap: () => context.goNamed(RouteNames.login),
                   ),
                   AccountMenuTile(
                     icon: Icons.person_add_alt_1_outlined,
-                    title: 'Register',
-                    subtitle: 'Create an account to get started.',
+                    title: l10n.register,
+                    subtitle: l10n.createAccountSubtitle,
                     onTap: () => context.pushNamed(RouteNames.register),
                   ),
                 ],
                 AccountMenuTile(
                   icon: Icons.settings_outlined,
-                  title: 'Settings',
+                  title: l10n.settings,
                   onTap: () => context.pushNamed(RouteNames.settings),
                 ),
                 const SizedBox(height: AppDimensions.spacing24),
-                _SectionLabel(title: 'Information'),
+                _SectionLabel(title: l10n.information),
                 const SizedBox(height: AppDimensions.spacing8),
                 AccountMenuTile(
                   icon: Icons.support_agent_outlined,
-                  title: 'Help & Support',
-                  subtitle: 'Contact details are not available yet.',
+                  title: l10n.helpAndSupport,
+                  subtitle: l10n.supportDetailsUnavailable,
                   onTap: _showSupportNotice,
                 ),
                 AccountMenuTile(
                   icon: Icons.info_outline_rounded,
-                  title: 'About the App',
+                  title: l10n.aboutApp,
                   onTap: _showAboutDialog,
                 ),
                 if (_isSignedIn == true) ...[
                   const SizedBox(height: AppDimensions.spacing24),
-                  _SectionLabel(title: 'Session'),
+                  _SectionLabel(title: l10n.session),
                   const SizedBox(height: AppDimensions.spacing8),
                   AccountMenuTile(
                     icon: Icons.logout_rounded,
-                    title: _isLoggingOut ? 'Logging out…' : 'Log out',
+                    title: _isLoggingOut ? l10n.loggingOut : l10n.logout,
                     onTap: _isLoggingOut ? null : _confirmLogout,
                     isDestructive: true,
                   ),
@@ -181,31 +185,23 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   void _showSupportNotice() {
+    final l10n = AppLocalizations.of(context)!;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Support contact details have not been added yet. Please check back soon.',
-          ),
-        ),
-      );
+      ..showSnackBar(SnackBar(content: Text(l10n.supportContactUnavailable)));
   }
 
   void _showAboutDialog() {
+    final l10n = AppLocalizations.of(context)!;
     showAboutDialog(
       context: context,
-      applicationName: AppConstants.appName,
+      applicationName: l10n.appName,
       applicationIcon: const Icon(
         Icons.spa_outlined,
         color: AppColors.primary,
         size: AppDimensions.iconLarge,
       ),
-      children: const [
-        Text(
-          'An app for exploring Hijama therapy services and training information.',
-        ),
-      ],
+      children: [Text(l10n.aboutDescription)],
     );
   }
 }
@@ -225,16 +221,18 @@ class _ProfileSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
     final title = isLoading
-        ? 'Loading account…'
+        ? l10n.loadingAccount
         : isSignedIn
-        ? 'Your profile'
-        : 'Welcome, guest';
+        ? l10n.yourProfile
+        : l10n.welcomeGuest;
     final subtitle =
         loadError ??
         (isSignedIn
-            ? email ?? 'Account details are not available yet.'
-            : 'Sign in or create an account to get started.');
+            ? email ?? l10n.accountDetailsUnavailable
+            : l10n.signInOrCreateAccount);
 
     return Card(
       child: Padding(
@@ -264,7 +262,7 @@ class _ProfileSummary extends StatelessWidget {
                   Text(
                     title,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.textPrimary,
+                      color: colorScheme.onSurface,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -273,7 +271,7 @@ class _ProfileSummary extends StatelessWidget {
                     subtitle,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: loadError == null
-                          ? AppColors.textSecondary
+                          ? colorScheme.onSurfaceVariant
                           : AppColors.error,
                     ),
                   ),
@@ -299,7 +297,7 @@ class _SectionLabel extends StatelessWidget {
       child: Text(
         title,
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-          color: AppColors.textSecondary,
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
           fontWeight: FontWeight.w700,
         ),
       ),

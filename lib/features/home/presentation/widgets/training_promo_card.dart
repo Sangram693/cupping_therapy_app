@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/services/app_color_service.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class TrainingPromoCard extends StatelessWidget {
   const TrainingPromoCard({super.key, required this.onExplore});
@@ -10,6 +11,9 @@ class TrainingPromoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(AppDimensions.cardPadding),
@@ -40,18 +44,18 @@ class TrainingPromoCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Hijama training',
+                        l10n.trainingPromoTitle,
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
-                              color: AppColors.textPrimary,
+                              color: colorScheme.onSurface,
                               fontWeight: FontWeight.w700,
                             ),
                       ),
                       const SizedBox(height: AppDimensions.spacing4),
                       Text(
-                        'Explore practical learning opportunities. Course details and availability are coming soon.',
+                        l10n.trainingPromoDescription,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textSecondary,
+                          color: colorScheme.onSurfaceVariant,
                           height: 1.45,
                         ),
                       ),
@@ -68,14 +72,14 @@ class TrainingPromoCard extends StatelessWidget {
                 onPressed: onExplore,
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.primary,
-                  side: const BorderSide(color: AppColors.border),
+                  side: BorderSide(color: colorScheme.outlineVariant),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(
                       AppDimensions.radiusMedium,
                     ),
                   ),
                 ),
-                child: const Text('Explore Training'),
+                child: Text(l10n.exploreTraining),
               ),
             ),
           ],

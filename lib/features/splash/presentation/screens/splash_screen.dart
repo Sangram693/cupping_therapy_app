@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/di/providers.dart';
 import '../../../../app/router/route_names.dart';
-import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/services/app_color_service.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -57,13 +57,19 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       body: DecoratedBox(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [AppColors.background, AppColors.surface],
+            colors: [
+              Theme.of(context).scaffoldBackgroundColor,
+              colorScheme.surface,
+            ],
           ),
         ),
         child: Stack(
@@ -90,15 +96,14 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                           Container(
                             width: AppDimensions.imageLarge,
                             height: AppDimensions.imageLarge,
-                            // padding: const EdgeInsets.all(
-                            //   AppDimensions.spacing8,
-                            // ),
                             decoration: BoxDecoration(
-                              color: AppColors.surface,
+                              color: colorScheme.surface,
                               borderRadius: BorderRadius.circular(
                                 AppDimensions.radiusXLarge,
                               ),
-                              border: Border.all(color: AppColors.border),
+                              border: Border.all(
+                                color: colorScheme.outlineVariant,
+                              ),
                               boxShadow: [
                                 BoxShadow(
                                   color: AppColors.primary.withValues(
@@ -119,7 +124,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                               child: Image.asset(
                                 'assets/images/app_logo.jpg',
                                 fit: BoxFit.contain,
-                                semanticLabel: '${AppConstants.appName} logo',
+                                semanticLabel: l10n.logoLabel(l10n.appName),
                                 errorBuilder: (context, error, stackTrace) =>
                                     const Center(
                                       child: Icon(
@@ -139,7 +144,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                           ),
                           const SizedBox(height: AppDimensions.spacing8),
                           Text(
-                            AppConstants.appName,
+                            l10n.appName,
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.headlineMedium
                                 ?.copyWith(
@@ -150,10 +155,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                           ),
                           const SizedBox(height: AppDimensions.spacing8),
                           Text(
-                            'Your Wellness, Our Care',
+                            l10n.appTagline,
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(color: AppColors.textSecondary),
+                                ?.copyWith(color: colorScheme.onSurfaceVariant),
                           ),
                           const SizedBox(height: AppDimensions.spacing48),
                           if (_hasError)
@@ -161,8 +166,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                           else ...[
                             Semantics(
                               label: _isCheckingSession
-                                  ? 'Restoring your session'
-                                  : 'Preparing your care experience',
+                                  ? l10n.restoringSession
+                                  : l10n.preparingExperience,
                               child: const SizedBox(
                                 width: AppDimensions.iconMedium,
                                 height: AppDimensions.iconMedium,
@@ -176,19 +181,21 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                             ),
                             const SizedBox(height: AppDimensions.spacing16),
                             Text(
-                              'Preparing your care experience...',
+                              l10n.preparingCare,
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.bodyMedium
-                                  ?.copyWith(color: AppColors.textSecondary),
+                                  ?.copyWith(
+                                    color: colorScheme.onSurfaceVariant,
+                                  ),
                             ),
                           ],
                           const SizedBox(height: AppDimensions.spacing64),
                           Text(
-                            'THERAPY • TRAINING • WELLNESS',
+                            l10n.splashFooter,
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.labelSmall
                                 ?.copyWith(
-                                  color: AppColors.textSecondary,
+                                  color: colorScheme.onSurfaceVariant,
                                   letterSpacing: 1.4,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -269,7 +276,7 @@ class _SessionError extends StatelessWidget {
         ),
         const SizedBox(height: AppDimensions.spacing12),
         Text(
-          "We couldn't restore your session.",
+          AppLocalizations.of(context)!.sessionRestoreFailed,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyLarge
               ?.copyWith(color: AppColors.error, fontWeight: FontWeight.w600),
@@ -278,7 +285,7 @@ class _SessionError extends StatelessWidget {
         FilledButton.icon(
           onPressed: onRetry,
           icon: const Icon(Icons.refresh),
-          label: const Text('Retry'),
+          label: Text(AppLocalizations.of(context)!.retry),
           style: FilledButton.styleFrom(
             backgroundColor: AppColors.primary,
             minimumSize: const Size(0, AppDimensions.buttonHeight),

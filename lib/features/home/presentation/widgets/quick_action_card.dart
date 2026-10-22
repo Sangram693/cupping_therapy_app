@@ -17,6 +17,8 @@ class QuickActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -48,7 +50,7 @@ class QuickActionCard extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: AppColors.textPrimary,
+                  color: colorScheme.onSurface,
                   fontWeight: FontWeight.w600,
                   height: 1.25,
                 ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/generated/app_localizations.dart';
+
 class AppErrorView extends StatelessWidget {
   const AppErrorView({super.key, required this.message, this.onRetry});
 
@@ -8,6 +10,8 @@ class AppErrorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24),
@@ -19,10 +23,7 @@ class AppErrorView extends StatelessWidget {
             Text(message, textAlign: TextAlign.center),
             if (onRetry != null) ...[
               const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: onRetry,
-                child: const Text('Try again'),
-              ),
+              ElevatedButton(onPressed: onRetry, child: Text(l10n.retry)),
             ],
           ],
         ),

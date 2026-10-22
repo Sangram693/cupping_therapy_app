@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/services/app_color_service.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../core/widgets/app_text_field.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class AuthForm extends StatefulWidget {
   const AuthForm({
@@ -43,60 +44,75 @@ class _AuthFormState extends State<AuthForm> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Form(
       key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           AppTextField(
-            labelText: 'Full name',
-            hintText: 'Enter your name',
+            labelText: l10n.fullName,
+            hintText: l10n.nameHint,
             prefixIcon: Icons.person_outline,
             textCapitalization: TextCapitalization.words,
-            validator: (value) =>
-                Validators.validateRequired(value, fieldName: 'Name'),
+            validator: (value) => Validators.validateRequired(
+              value,
+              requiredMessage: l10n.fieldRequired(l10n.fullName),
+            ),
           ),
           const SizedBox(height: 18),
           AppTextField(
-            labelText: 'Email',
-            hintText: 'you@example.com',
+            labelText: l10n.email,
+            hintText: l10n.emailHint,
             prefixIcon: Icons.email_outlined,
             keyboardType: TextInputType.emailAddress,
-            validator: Validators.validateEmail,
+            validator: (value) => Validators.validateEmail(
+              value,
+              requiredMessage: l10n.emailRequired,
+              invalidMessage: l10n.invalidEmail,
+            ),
           ),
           const SizedBox(height: 18),
           AppTextField(
             controller: _passwordController,
-            labelText: 'Password',
-            hintText: 'At least 8 characters',
+            labelText: l10n.password,
+            hintText: l10n.passwordLengthHint,
             prefixIcon: Icons.lock_outline,
             obscureText: _obscurePassword,
             suffixIcon: _obscurePassword
                 ? Icons.visibility_outlined
                 : Icons.visibility_off_outlined,
+            suffixIconTooltip: l10n.passwordVisibility,
             onSuffixIconPressed: () {
               setState(() => _obscurePassword = !_obscurePassword);
             },
-            validator: Validators.validatePassword,
+            validator: (value) => Validators.validatePassword(
+              value,
+              requiredMessage: l10n.passwordRequired,
+              minLengthMessage: l10n.passwordMinLength(8),
+            ),
           ),
           const SizedBox(height: 18),
           AppTextField(
-            labelText: 'Confirm password',
-            hintText: 'Enter your password again',
+            labelText: l10n.confirmPassword,
+            hintText: l10n.confirmPasswordHint,
             prefixIcon: Icons.lock_outline,
             obscureText: _obscureConfirmation,
             suffixIcon: _obscureConfirmation
                 ? Icons.visibility_outlined
                 : Icons.visibility_off_outlined,
+            suffixIconTooltip: l10n.passwordVisibility,
             onSuffixIconPressed: () {
               setState(() => _obscureConfirmation = !_obscureConfirmation);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please confirm your password.';
+                return l10n.confirmPasswordRequired;
               }
               if (value != _passwordController.text) {
-                return 'Passwords do not match.';
+                return l10n.passwordsDoNotMatch;
               }
               return null;
             },
@@ -107,9 +123,9 @@ class _AuthFormState extends State<AuthForm> {
             contentPadding: EdgeInsets.zero,
             controlAffinity: ListTileControlAffinity.leading,
             activeColor: AppColors.primary,
-            title: const Text(
-              'I agree to the terms and privacy policy',
-              style: TextStyle(color: AppColors.textSecondary),
+            title: Text(
+              l10n.termsAndPrivacy,
+              style: TextStyle(color: colorScheme.onSurfaceVariant),
             ),
             onChanged: (value) {
               setState(() {
@@ -119,10 +135,10 @@ class _AuthFormState extends State<AuthForm> {
             },
           ),
           if (_showTermsError)
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(left: 12, bottom: 8),
               child: Text(
-                'Please accept the terms to continue.',
+                l10n.termsRequired,
                 style: TextStyle(color: AppColors.error, fontSize: 12),
               ),
             ),

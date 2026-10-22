@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/route_names.dart';
-import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_dimensions.dart';
-import '../../../../core/services/app_color_service.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../widgets/contact_card.dart';
 import '../widgets/home_header.dart';
 import '../widgets/home_promo_banner.dart';
@@ -17,8 +16,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -49,8 +48,8 @@ class HomeScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: AppDimensions.spacing32),
                         _SectionHeading(
-                          title: 'Quick actions',
-                          subtitle: 'Find what you need, quickly.',
+                          title: l10n.quickActions,
+                          subtitle: l10n.quickActionsSubtitle,
                         ),
                         const SizedBox(height: AppDimensions.spacing16),
                         GridView.count(
@@ -63,37 +62,37 @@ class HomeScreen extends StatelessWidget {
                           children: [
                             QuickActionCard(
                               icon: Icons.event_available_outlined,
-                              label: 'Book an Appointment',
+                              label: l10n.bookAppointment,
                               onTap: () =>
                                   context.pushNamed(RouteNames.appointments),
                             ),
                             QuickActionCard(
                               icon: Icons.spa_outlined,
-                              label: 'Explore Therapy',
+                              label: l10n.exploreTherapy,
                               onTap: () =>
                                   context.pushNamed(RouteNames.therapy),
                             ),
                             QuickActionCard(
                               icon: Icons.menu_book_outlined,
-                              label: 'Training Programs',
+                              label: l10n.trainingPrograms,
                               onTap: () =>
                                   context.pushNamed(RouteNames.training),
                             ),
                             QuickActionCard(
                               icon: Icons.chat_bubble_outline,
-                              label: 'Contact Us',
+                              label: l10n.contactUs,
                               onTap: () => _showContactDetailsMessage(context),
                             ),
                           ],
                         ),
                         const SizedBox(height: AppDimensions.spacing32),
                         _SectionHeading(
-                          title: 'Our Services',
-                          subtitle: 'Service information is being prepared.',
+                          title: l10n.ourServices,
+                          subtitle: l10n.serviceInformationPreparing,
                           trailing: TextButton(
                             onPressed: () =>
                                 context.pushNamed(RouteNames.therapy),
-                            child: const Text('View all'),
+                            child: Text(l10n.viewAll),
                           ),
                         ),
                         const SizedBox(height: AppDimensions.spacing16),
@@ -102,8 +101,8 @@ class HomeScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: AppDimensions.spacing32),
                         _SectionHeading(
-                          title: 'Training Programs',
-                          subtitle: 'Learn more about practical training.',
+                          title: l10n.trainingPrograms,
+                          subtitle: l10n.trainingSectionSubtitle,
                         ),
                         const SizedBox(height: AppDimensions.spacing16),
                         TrainingPromoCard(
@@ -111,7 +110,7 @@ class HomeScreen extends StatelessWidget {
                               context.pushNamed(RouteNames.training),
                         ),
                         const SizedBox(height: AppDimensions.spacing32),
-                        _SectionHeading(title: 'Contact & location'),
+                        _SectionHeading(title: l10n.contactAndLocation),
                         const SizedBox(height: AppDimensions.spacing16),
                         ContactCard(
                           onContact: () => _showContactDetailsMessage(context),
@@ -132,9 +131,9 @@ class HomeScreen extends StatelessWidget {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(
-            'Contact details are not available yet. Please check back soon.',
+            AppLocalizations.of(context)!.contactDetailsUnavailable,
           ),
         ),
       );
@@ -152,8 +151,10 @@ class _SectionHeading extends StatelessWidget {
   Widget build(BuildContext context) {
     final titleWidget = Text(
       title,
-      style: Theme.of(context).textTheme.titleLarge
-          ?.copyWith(color: AppColors.textPrimary, fontWeight: FontWeight.w700),
+      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+        color: Theme.of(context).colorScheme.onSurface,
+        fontWeight: FontWeight.w700,
+      ),
     );
     final subtitleText = subtitle;
 
@@ -166,8 +167,9 @@ class _SectionHeading extends StatelessWidget {
             const SizedBox(height: AppDimensions.spacing4),
             Text(
               subtitleText,
-              style: Theme.of(context).textTheme.bodyMedium
-                  ?.copyWith(color: AppColors.textSecondary),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
           ],
         ],
@@ -185,8 +187,9 @@ class _SectionHeading extends StatelessWidget {
                 const SizedBox(height: AppDimensions.spacing4),
                 Text(
                   subtitleText,
-                  style: Theme.of(context).textTheme.bodyMedium
-                      ?.copyWith(color: AppColors.textSecondary),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ],
             ],
@@ -205,21 +208,22 @@ class _ServiceCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final services = [
       (
         icon: Icons.spa_outlined,
-        title: AppConstants.appName,
-        description: 'Contact us for service details and availability.',
+        title: l10n.therapyServiceTitle,
+        description: l10n.serviceDetailsUnavailable,
       ),
       (
         icon: Icons.health_and_safety_outlined,
-        title: 'Consultation',
-        description: 'Ask us about available consultation options.',
+        title: l10n.consultation,
+        description: l10n.consultationDetails,
       ),
       (
         icon: Icons.widgets_outlined,
-        title: 'Therapy Packages',
-        description: 'Package information will be shared soon.',
+        title: l10n.therapyPackages,
+        description: l10n.packageDetailsUnavailable,
       ),
     ];
 

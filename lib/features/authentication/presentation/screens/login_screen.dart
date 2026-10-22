@@ -8,6 +8,7 @@ import '../../../../core/services/app_color_service.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/constants/app_dimensions.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -45,9 +46,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
     } catch (error) {
       if (mounted) {
-        setState(
-          () => _storageError = 'Unable to load saved sign-in details: $error',
-        );
+        setState(() {
+          _storageError = AppLocalizations.of(context)!.unableToLoadCredentials;
+        });
       }
     }
   }
@@ -78,7 +79,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
     } catch (error) {
       if (mounted) {
-        setState(() => _storageError = 'Unable to save sign-in state: $error');
+        setState(() {
+          _storageError = AppLocalizations.of(context)!.unableToSaveSignInState;
+        });
       }
     } finally {
       if (mounted) {
@@ -97,9 +100,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -117,22 +121,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         height: AppDimensions.imageLarge,
                         // padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.6),
-                          borderRadius: BorderRadius.circular(28),
-                          border: Border.all(color: AppColors.border),
+                          color: colorScheme.surfaceContainerHighest,
+                          borderRadius: BorderRadius.circular(
+                            AppDimensions.radiusXLarge,
+                          ),
+                          border: Border.all(color: colorScheme.outlineVariant),
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: Image.asset(
                             'assets/images/app_logo.jpg',
                             fit: BoxFit.cover,
+                            semanticLabel: l10n.logoLabel(l10n.appName),
                           ),
                         ),
                       ),
                     ),
                     const SizedBox(height: 28),
                     Text(
-                      'Welcome back',
+                      l10n.welcomeBack,
                       textAlign: TextAlign.center,
                       style: textTheme.headlineMedium?.copyWith(
                         color: AppColors.primary,
@@ -141,70 +148,77 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Sign in to continue your care journey.',
+                      l10n.signInTagline,
                       textAlign: TextAlign.center,
                       style: textTheme.bodyLarge?.copyWith(
-                        color: AppColors.textSecondary,
+                        color: colorScheme.onSurfaceVariant,
                       ),
                     ),
                     const SizedBox(height: 32),
                     Text(
-                      'Email address',
+                      l10n.emailAddress,
                       style: textTheme.titleSmall?.copyWith(
-                        color: AppColors.textPrimary,
+                        color: colorScheme.onSurface,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(height: 8),
                     AppTextField(
                       controller: _emailController,
-                      labelText: 'Email',
-                      hintText: 'you@example.com',
+                      labelText: l10n.email,
+                      hintText: l10n.emailHint,
                       prefixIcon: Icons.email_outlined,
                       keyboardType: TextInputType.emailAddress,
-                      validator: Validators.validateEmail,
+                      validator: (value) => Validators.validateEmail(
+                        value,
+                        requiredMessage: l10n.emailRequired,
+                        invalidMessage: l10n.invalidEmail,
+                      ),
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Password',
+                      l10n.password,
                       style: textTheme.titleSmall?.copyWith(
-                        color: AppColors.textPrimary,
+                        color: colorScheme.onSurface,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(height: 8),
                     AppTextField(
                       controller: _passwordController,
-                      labelText: 'Password',
-                      hintText: 'Enter your password',
+                      labelText: l10n.password,
+                      hintText: l10n.passwordHint,
                       prefixIcon: Icons.lock_outline,
                       obscureText: _obscurePassword,
                       suffixIcon: _obscurePassword
                           ? Icons.visibility_outlined
                           : Icons.visibility_off_outlined,
+                      suffixIconTooltip: l10n.passwordVisibility,
                       onSuffixIconPressed: () {
                         setState(() {
                           _obscurePassword = !_obscurePassword;
                         });
                       },
-                      validator: Validators.validatePassword,
+                      validator: (value) => Validators.validatePassword(
+                        value,
+                        requiredMessage: l10n.passwordRequired,
+                        minLengthMessage: l10n.passwordMinLength(8),
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Row(
                       children: [
                         Checkbox(
                           value: _rememberMe,
-                          activeColor: AppColors.primary,
-                          side: const BorderSide(
-                            color: AppColors.textSecondary,
-                          ),
+                          activeColor: colorScheme.primary,
+                          side: BorderSide(color: colorScheme.onSurfaceVariant),
                           onChanged: (value) {
                             setState(() => _rememberMe = value ?? false);
                           },
                         ),
-                        const Text(
-                          'Remember me',
-                          style: TextStyle(color: AppColors.textSecondary),
+                        Text(
+                          l10n.rememberMe,
+                          style: TextStyle(color: colorScheme.onSurfaceVariant),
                         ),
                         const Spacer(),
                       ],
@@ -231,8 +245,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   strokeWidth: 2,
                                 ),
                               )
-                            : const Text(
-                                'Sign in',
+                            : Text(
+                                l10n.signIn,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -246,19 +260,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       crossAxisAlignment: WrapCrossAlignment.center,
                       spacing: 4,
                       children: [
-                        const Text(
-                          "Don't have an account? ",
-                          style: TextStyle(color: AppColors.textSecondary),
+                        Text(
+                          l10n.noAccountPrompt,
+                          style: TextStyle(color: colorScheme.onSurfaceVariant),
                         ),
                         TextButton(
                           onPressed: () =>
                               context.pushNamed(RouteNames.register),
                           style: TextButton.styleFrom(
-                            foregroundColor: AppColors.primary,
+                            foregroundColor: colorScheme.primary,
                             padding: const EdgeInsets.symmetric(horizontal: 4),
                           ),
-                          child: const Text(
-                            'Create account',
+                          child: Text(
+                            l10n.createAccount,
                             style: TextStyle(fontWeight: FontWeight.w700),
                           ),
                         ),
@@ -275,9 +289,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                         const SizedBox(width: 6),
                         Text(
-                          'Your wellbeing is our priority',
+                          l10n.wellbeingPriority,
                           style: textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
+                            color: colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ],

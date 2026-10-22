@@ -4,15 +4,17 @@ import 'package:go_router/go_router.dart';
 import '../../../../app/router/route_names.dart';
 import '../../../../core/services/app_color_service.dart';
 import '../../../../core/widgets/app_back_button.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../widgets/auth_form.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
 
   void _showBackendNotice(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Registration is not connected to a server yet.'),
+      SnackBar(
+        content: Text(l10n.registrationUnavailable),
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -21,9 +23,10 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -43,22 +46,23 @@ class RegisterScreen extends StatelessWidget {
                       height: 96,
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: AppColors.surface,
+                        color: colorScheme.surface,
                         borderRadius: BorderRadius.circular(26),
-                        border: Border.all(color: AppColors.border),
+                        border: Border.all(color: colorScheme.outlineVariant),
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(18),
                         child: Image.asset(
                           'assets/images/app_logo.jpg',
                           fit: BoxFit.cover,
+                          semanticLabel: l10n.logoLabel(l10n.appName),
                         ),
                       ),
                     ),
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'Create your account',
+                    l10n.createYourAccount,
                     textAlign: TextAlign.center,
                     style: textTheme.headlineSmall?.copyWith(
                       color: AppColors.primary,
@@ -67,15 +71,15 @@ class RegisterScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Join us and take the next step in your care journey.',
+                    l10n.registrationTagline,
                     textAlign: TextAlign.center,
                     style: textTheme.bodyLarge?.copyWith(
-                      color: AppColors.textSecondary,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                   ),
                   const SizedBox(height: 28),
                   AuthForm(
-                    submitLabel: 'Create account',
+                    submitLabel: l10n.createAccount,
                     onSubmit: () => _showBackendNotice(context),
                   ),
                   const SizedBox(height: 16),
@@ -84,9 +88,9 @@ class RegisterScreen extends StatelessWidget {
                     crossAxisAlignment: WrapCrossAlignment.center,
                     spacing: 4,
                     children: [
-                      const Text(
-                        'Already have an account?',
-                        style: TextStyle(color: AppColors.textSecondary),
+                      Text(
+                        l10n.alreadyHaveAccount,
+                        style: TextStyle(color: colorScheme.onSurfaceVariant),
                       ),
                       TextButton(
                         onPressed: () {
@@ -97,11 +101,11 @@ class RegisterScreen extends StatelessWidget {
                           }
                         },
                         style: TextButton.styleFrom(
-                          foregroundColor: AppColors.primary,
+                          foregroundColor: colorScheme.primary,
                           padding: const EdgeInsets.symmetric(horizontal: 4),
                         ),
-                        child: const Text(
-                          'Sign in',
+                        child: Text(
+                          l10n.signIn,
                           style: TextStyle(fontWeight: FontWeight.w700),
                         ),
                       ),

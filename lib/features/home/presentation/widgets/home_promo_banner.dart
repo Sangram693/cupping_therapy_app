@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/services/app_color_service.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class HomePromoBanner extends StatelessWidget {
   const HomePromoBanner({super.key, required this.onExplore});
@@ -11,6 +11,8 @@ class HomePromoBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(AppDimensions.cardPadding),
@@ -45,7 +47,7 @@ class HomePromoBanner extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Discover ${AppConstants.appName}',
+                        l10n.discoverTherapy,
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: AppColors.surface,
                           fontWeight: FontWeight.w700,
@@ -53,7 +55,7 @@ class HomePromoBanner extends StatelessWidget {
                       ),
                       const SizedBox(height: AppDimensions.spacing8),
                       Text(
-                        'Explore our services and professional training programs.',
+                        l10n.exploreServicesAndTraining,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppColors.surface.withValues(alpha: 0.88),
                           height: 1.45,
@@ -73,7 +75,7 @@ class HomePromoBanner extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: const Text('Explore Services'),
+                          child: Text(l10n.exploreServices),
                         ),
                       ),
                     ],
@@ -81,13 +83,13 @@ class HomePromoBanner extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: AppDimensions.spacing8),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(top: AppDimensions.spacing8),
                 child: Icon(
                   Icons.spa_outlined,
                   color: AppColors.accent,
                   size: AppDimensions.iconXLarge,
-                  semanticLabel: 'Wellness',
+                  semanticLabel: l10n.wellnessIconLabel,
                 ),
               ),
             ],

@@ -21,9 +21,10 @@ class AccountMenuTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final foregroundColor = isDestructive
         ? AppColors.error
-        : AppColors.textPrimary;
+        : colorScheme.onSurface;
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -40,13 +41,13 @@ class AccountMenuTile extends StatelessWidget {
             : Text(
                 subtitle!,
                 style: Theme.of(context).textTheme.bodySmall
-                    ?.copyWith(color: AppColors.textSecondary),
+                    ?.copyWith(color: colorScheme.onSurfaceVariant),
               ),
         trailing: onTap == null
             ? null
-            : const Icon(
+            : Icon(
                 Icons.chevron_right_rounded,
-                color: AppColors.textSecondary,
+                color: colorScheme.onSurfaceVariant,
               ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: AppDimensions.cardPadding,

@@ -9,7 +9,7 @@ ThemeData buildDarkTheme() {
     colorScheme: ColorScheme.fromSeed(
       seedColor: AppColors.primary,
       brightness: Brightness.dark,
-      primary: AppColors.primary,
+      primary: AppColors.secondary,
       secondary: AppColors.secondary,
       surface: const Color(0xFF10251D),
       error: AppColors.error,

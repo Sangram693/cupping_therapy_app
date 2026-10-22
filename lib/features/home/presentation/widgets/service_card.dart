@@ -19,6 +19,8 @@ class ServiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -50,7 +52,7 @@ class ServiceCard extends StatelessWidget {
                     Text(
                       title,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AppColors.textPrimary,
+                        color: colorScheme.onSurface,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -58,7 +60,7 @@ class ServiceCard extends StatelessWidget {
                     Text(
                       description,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
+                        color: colorScheme.onSurfaceVariant,
                         height: 1.4,
                       ),
                     ),
@@ -66,10 +68,10 @@ class ServiceCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: AppDimensions.spacing8),
-              const Icon(
+              Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: AppDimensions.iconSmall,
-                color: AppColors.textSecondary,
+                color: colorScheme.onSurfaceVariant,
               ),
             ],
           ),

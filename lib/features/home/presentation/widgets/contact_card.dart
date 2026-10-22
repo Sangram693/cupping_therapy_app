@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/services/app_color_service.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class ContactCard extends StatelessWidget {
   const ContactCard({super.key, required this.onContact});
@@ -10,6 +11,9 @@ class ContactCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(AppDimensions.cardPadding),
@@ -31,15 +35,17 @@ class ContactCard extends StatelessWidget {
             const SizedBox(width: AppDimensions.spacing16),
             Expanded(
               child: Text(
-                'Business contact and location details have not been added yet.',
-                style: Theme.of(context).textTheme.bodyMedium
-                    ?.copyWith(color: AppColors.textSecondary, height: 1.4),
+                l10n.businessDetailsUnavailable,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                  height: 1.4,
+                ),
               ),
             ),
             const SizedBox(width: AppDimensions.spacing8),
             IconButton(
               onPressed: onContact,
-              tooltip: 'Contact us for details',
+              tooltip: l10n.contactUsForDetails,
               color: AppColors.primary,
               icon: const Icon(Icons.arrow_forward_rounded),
             ),

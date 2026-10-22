@@ -1,19 +1,28 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive/hive.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:cupping_therapy/app/app.dart';
 import 'package:cupping_therapy/app/di/providers.dart';
 import 'package:cupping_therapy/app/router/route_names.dart';
 import 'package:cupping_therapy/app/theme/app_theme.dart';
-import 'package:cupping_therapy/core/constants/app_constants.dart';
 import 'package:cupping_therapy/core/services/app_color_service.dart';
 import 'package:cupping_therapy/core/services/auth_storage.dart';
+import 'package:cupping_therapy/core/utils/date_time_utils.dart';
+import 'package:cupping_therapy/features/settings/presentation/providers/locale_provider.dart';
+import 'package:cupping_therapy/features/settings/presentation/screens/settings_screen.dart';
+import 'package:cupping_therapy/features/settings/presentation/providers/theme_provider.dart';
 import 'package:cupping_therapy/features/authentication/presentation/widgets/auth_form.dart';
 import 'package:cupping_therapy/features/authentication/presentation/screens/login_screen.dart';
 import 'package:cupping_therapy/features/home/presentation/screens/home_screen.dart';
 import 'package:cupping_therapy/features/profile/presentation/screens/profile_screen.dart';
+import 'package:cupping_therapy/l10n/generated/app_localizations.dart';
 
 class FakeAuthStorage implements AuthStorage {
   FakeAuthStorage({this.isLoggedIn = false});
@@ -62,6 +71,28 @@ class RetryAuthStorage extends FakeAuthStorage {
   }
 }
 
+class _SettingsTestApp extends ConsumerWidget {
+  const _SettingsTestApp();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return MaterialApp(
+      locale: ref.watch(localeProvider),
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: ref.watch(themeProvider),
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      home: const SettingsScreen(),
+    );
+  }
+}
+
 void main() {
   test('AppColors palette uses the required brand values', () {
     expect(AppColors.primary.toARGB32(), 0xFF075B3C);
@@ -88,7 +119,120 @@ void main() {
 
     expect(darkTheme.useMaterial3, isTrue);
     expect(darkTheme.brightness, Brightness.dark);
-    expect(darkTheme.colorScheme.primary, AppColors.primary);
+    expect(darkTheme.colorScheme.primary, AppColors.secondary);
+    expect(darkTheme.scaffoldBackgroundColor, isNot(AppColors.background));
+    expect(darkTheme.cardTheme.color, isNot(AppColors.surface));
+  });
+
+  test('Date formatting follows the selected locale', () async {
+    await initializeDateFormatting('en');
+    await initializeDateFormatting('bn');
+    final date = DateTime(2026, 10, 22);
+
+    expect(
+      DateTimeUtils.formatShortDate(date, locale: 'bn'),
+      isNot(DateTimeUtils.formatShortDate(date, locale: 'en')),
+    );
+  });
+
+  test('Locale preference persists between notifier instances', () async {
+    final directory = await Directory.systemTemp.createTemp(
+      'cupping-therapy-locale-',
+    );
+    Hive.init(directory.path);
+    final preferences = await Hive.openBox<String>('locale_test');
+
+    final localeNotifier = LocaleNotifier(preferencesBox: preferences);
+    await localeNotifier.setLocale(const Locale('bn'));
+    final restoredNotifier = LocaleNotifier(preferencesBox: preferences);
+
+    expect(restoredNotifier.state, const Locale('bn'));
+
+    await preferences.close();
+    await Hive.deleteBoxFromDisk('locale_test');
+    await directory.delete(recursive: true);
+  });
+
+  test('Theme preference persists between notifier instances', () async {
+    final directory = await Directory.systemTemp.createTemp(
+      'cupping-therapy-theme-',
+    );
+    Hive.init(directory.path);
+    final preferences = await Hive.openBox<String>('theme_test');
+
+    final themeNotifier = ThemeNotifier(preferencesBox: preferences);
+    expect(themeNotifier.state, ThemeMode.system);
+    await themeNotifier.setThemeMode(ThemeMode.dark);
+    final restoredNotifier = ThemeNotifier(preferencesBox: preferences);
+
+    expect(restoredNotifier.state, ThemeMode.dark);
+    await restoredNotifier.setThemeMode(ThemeMode.light);
+    expect(ThemeNotifier(preferencesBox: preferences).state, ThemeMode.light);
+
+    await preferences.close();
+    await Hive.deleteBoxFromDisk('theme_test');
+    await directory.delete(recursive: true);
+  });
+
+  testWidgets('Settings switches theme and keeps language selection', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          localeProvider.overrideWith((ref) => LocaleNotifier()),
+          themeProvider.overrideWith((ref) => ThemeNotifier()),
+        ],
+        child: const _SettingsTestApp(),
+      ),
+    );
+
+    expect(find.text('Appearance'), findsOneWidget);
+    expect(find.text('System default'), findsOneWidget);
+    await tester.tap(find.text('Dark').last);
+    await tester.pumpAndSettle();
+
+    expect(
+      tester.widget<MaterialApp>(find.byType(MaterialApp)).themeMode,
+      ThemeMode.dark,
+    );
+    await tester.tap(find.text('বাংলা'));
+    await tester.pumpAndSettle();
+    expect(find.text('থিম ও প্রদর্শন'), findsOneWidget);
+    expect(find.text('ডার্ক'), findsOneWidget);
+
+    await tester.tap(find.text('লাইট'));
+    await tester.pumpAndSettle();
+    expect(
+      tester.widget<MaterialApp>(find.byType(MaterialApp)).themeMode,
+      ThemeMode.light,
+    );
+    await tester.tap(find.text('সিস্টেমের ডিফল্ট'));
+    await tester.pumpAndSettle();
+    expect(
+      tester.widget<MaterialApp>(find.byType(MaterialApp)).themeMode,
+      ThemeMode.system,
+    );
+  });
+
+  testWidgets('Settings switches the app language immediately', (tester) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [localeProvider.overrideWith((ref) => LocaleNotifier())],
+        child: const _SettingsTestApp(),
+      ),
+    );
+
+    expect(find.text('Settings'), findsOneWidget);
+    await tester.tap(find.text('বাংলা'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('সেটিংস'), findsOneWidget);
+    expect(find.text('আপনার পছন্দের ভাষা নির্বাচন করুন।'), findsOneWidget);
+
+    await tester.tap(find.text('English'));
+    await tester.pumpAndSettle();
+    expect(find.text('Settings'), findsOneWidget);
   });
 
   testWidgets('Splash screen navigates to login after two seconds', (
@@ -123,7 +267,7 @@ void main() {
     await tester.pump(const Duration(seconds: 2));
     await tester.pumpAndSettle();
 
-    expect(find.text('Welcome to ${AppConstants.appName}'), findsOneWidget);
+    expect(find.text('Welcome to Cupping Therapy'), findsOneWidget);
   });
 
   testWidgets('Splash screen can retry after session restoration fails', (
@@ -146,7 +290,7 @@ void main() {
     await tester.tap(find.text('Retry'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Welcome to ${AppConstants.appName}'), findsOneWidget);
+    expect(find.text('Welcome to Cupping Therapy'), findsOneWidget);
   });
 
   testWidgets('Successful login saves credentials and opens home', (
@@ -172,7 +316,11 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [authStorageProvider.overrideWithValue(authStorage)],
-        child: MaterialApp.router(routerConfig: router),
+        child: MaterialApp.router(
+          routerConfig: router,
+          supportedLocales: AppLocalizations.supportedLocales,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+        ),
       ),
     );
     await tester.pumpAndSettle();
@@ -185,7 +333,7 @@ void main() {
     await tester.tap(find.text('Sign in'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Welcome to ${AppConstants.appName}'), findsOneWidget);
+    expect(find.text('Welcome to Cupping Therapy'), findsOneWidget);
     expect(await authStorage.hasActiveSession(), isTrue);
     expect(authStorage.credentials?.email, 'user@example.com');
     expect(authStorage.credentials?.password, 'password123');
@@ -198,7 +346,11 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [authStorageProvider.overrideWithValue(authStorage)],
-        child: const MaterialApp(home: ProfileScreen()),
+        child: MaterialApp(
+          supportedLocales: AppLocalizations.supportedLocales,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          home: const ProfileScreen(),
+        ),
       ),
     );
     await tester.pumpAndSettle();
@@ -234,7 +386,11 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [authStorageProvider.overrideWithValue(authStorage)],
-        child: MaterialApp.router(routerConfig: router),
+        child: MaterialApp.router(
+          routerConfig: router,
+          supportedLocales: AppLocalizations.supportedLocales,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+        ),
       ),
     );
     await tester.pumpAndSettle();
@@ -266,6 +422,8 @@ void main() {
     var submitted = false;
     await tester.pumpWidget(
       MaterialApp(
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
         home: Scaffold(
           body: SingleChildScrollView(
             child: AuthForm(
@@ -281,7 +439,7 @@ void main() {
     await tester.tap(find.text('Create account'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Name is required.'), findsOneWidget);
+    expect(find.text('Full name is required.'), findsOneWidget);
     expect(find.text('Email is required.'), findsOneWidget);
     expect(find.text('Password is required.'), findsOneWidget);
     expect(find.text('Please accept the terms to continue.'), findsOneWidget);

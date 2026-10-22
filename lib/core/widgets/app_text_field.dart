@@ -8,6 +8,7 @@ class AppTextField extends StatelessWidget {
     this.hintText,
     this.prefixIcon,
     this.suffixIcon,
+    this.suffixIconTooltip,
     this.onSuffixIconPressed,
     this.obscureText = false,
     this.keyboardType,
@@ -22,6 +23,7 @@ class AppTextField extends StatelessWidget {
   final String? hintText;
   final IconData? prefixIcon;
   final IconData? suffixIcon;
+  final String? suffixIconTooltip;
   final VoidCallback? onSuffixIconPressed;
   final bool obscureText;
   final TextInputType? keyboardType;
@@ -48,6 +50,7 @@ class AppTextField extends StatelessWidget {
             ? null
             : IconButton(
                 onPressed: onSuffixIconPressed,
+                tooltip: suffixIconTooltip,
                 icon: Icon(suffixIcon),
               ),
       ),

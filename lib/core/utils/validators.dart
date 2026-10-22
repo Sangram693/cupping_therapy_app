@@ -1,32 +1,44 @@
 class Validators {
   Validators._();
 
-  static String? validateRequired(String? value, {String fieldName = 'Field'}) {
+  static String? validateRequired(
+    String? value, {
+    required String requiredMessage,
+  }) {
     if (value == null || value.trim().isEmpty) {
-      return '$fieldName is required.';
+      return requiredMessage;
     }
     return null;
   }
 
-  static String? validateEmail(String? value) {
+  static String? validateEmail(
+    String? value, {
+    required String requiredMessage,
+    required String invalidMessage,
+  }) {
     final trimmed = value?.trim() ?? '';
     if (trimmed.isEmpty) {
-      return 'Email is required.';
+      return requiredMessage;
     }
     const emailPattern =
         r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$";
     if (!RegExp(emailPattern).hasMatch(trimmed)) {
-      return 'Enter a valid email address.';
+      return invalidMessage;
     }
     return null;
   }
 
-  static String? validatePassword(String? value, {int minLength = 8}) {
+  static String? validatePassword(
+    String? value, {
+    int minLength = 8,
+    required String requiredMessage,
+    required String minLengthMessage,
+  }) {
     if (value == null || value.isEmpty) {
-      return 'Password is required.';
+      return requiredMessage;
     }
     if (value.length < minLength) {
-      return 'Password must be at least $minLength characters.';
+      return minLengthMessage;
     }
     return null;
   }
