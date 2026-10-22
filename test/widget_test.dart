@@ -46,6 +46,21 @@ class FakeAuthStorage implements AuthStorage {
   }
 }
 
+class RetryAuthStorage extends FakeAuthStorage {
+  RetryAuthStorage() : super(isLoggedIn: true);
+
+  bool shouldFail = true;
+
+  @override
+  Future<bool> hasActiveSession() async {
+    if (shouldFail) {
+      shouldFail = false;
+      throw StateError('Session lookup failed');
+    }
+    return super.hasActiveSession();
+  }
+}
+
 void main() {
   test('AppColors palette uses the required brand values', () {
     expect(AppColors.primary.toARGB32(), 0xFF075B3C);
@@ -105,6 +120,29 @@ void main() {
     );
 
     await tester.pump(const Duration(seconds: 2));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Welcome to Hijama Care'), findsOneWidget);
+  });
+
+  testWidgets('Splash screen can retry after session restoration fails', (
+    tester,
+  ) async {
+    final authStorage = RetryAuthStorage();
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [authStorageProvider.overrideWithValue(authStorage)],
+        child: const App(),
+      ),
+    );
+
+    await tester.pump(const Duration(seconds: 2));
+    await tester.pumpAndSettle();
+
+    expect(find.text("We couldn't restore your session."), findsOneWidget);
+    expect(find.text('Retry'), findsOneWidget);
+
+    await tester.tap(find.text('Retry'));
     await tester.pumpAndSettle();
 
     expect(find.text('Welcome to Hijama Care'), findsOneWidget);
