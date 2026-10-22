@@ -239,6 +239,27 @@ class AppLocalizationsBn extends AppLocalizations {
   String get trainingProgramsPlaceholder => 'প্রশিক্ষণ কর্মসূচির তথ্য';
 
   @override
+  String get trainingIntroTitle => 'কাপিং থেরাপি শেখার সুযোগ দেখুন';
+
+  @override
+  String get trainingIntroDescription =>
+      'কাপিং থেরাপির ব্যবহারিক প্রশিক্ষণের সুযোগ সম্পর্কে জানুন। কর্মসূচির বিস্তারিত নিশ্চিত হলে জানানো হবে।';
+
+  @override
+  String get trainingProgramsEmptyTitle => 'প্রশিক্ষণের বিস্তারিত শিগগিরই আসছে';
+
+  @override
+  String get trainingProgramsEmptyDescription =>
+      'এই মুহূর্তে দেখানোর মতো কোনো নিশ্চিত কর্মসূচি নেই। যাচাইকৃত কোর্সের তথ্য ও ভর্তির আপডেট পাওয়া গেলে এখানে দেওয়া হবে।';
+
+  @override
+  String get trainingEducationDisclaimer =>
+      'প্রশিক্ষণের তথ্য শিক্ষামূলক; এটি চিকিৎসকের পরামর্শ বা পেশাগত লাইসেন্সের শর্তের বিকল্প নয়।';
+
+  @override
+  String get trainingIconLabel => 'শেখা ও শিক্ষা';
+
+  @override
   String get profileAndAccount => 'প্রোফাইল ও অ্যাকাউন্ট';
 
   @override

@@ -239,6 +239,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trainingProgramsPlaceholder => 'Training programs placeholder';
 
   @override
+  String get trainingIntroTitle => 'Explore cupping therapy training';
+
+  @override
+  String get trainingIntroDescription =>
+      'Learn about practical training opportunities in cupping therapy. Program details will be shared when confirmed.';
+
+  @override
+  String get trainingProgramsEmptyTitle => 'Training details are coming soon';
+
+  @override
+  String get trainingProgramsEmptyDescription =>
+      'There are no confirmed programs to show right now. Verified course information and enrollment updates will appear here when available.';
+
+  @override
+  String get trainingEducationDisclaimer =>
+      'Training information is educational and does not replace medical advice or professional licensing requirements.';
+
+  @override
+  String get trainingIconLabel => 'Learning and education';
+
+  @override
   String get profileAndAccount => 'Profile & account';
 
   @override

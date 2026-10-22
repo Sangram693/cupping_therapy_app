@@ -512,6 +512,42 @@ abstract class AppLocalizations {
   /// **'Training programs placeholder'**
   String get trainingProgramsPlaceholder;
 
+  /// No description provided for @trainingIntroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore cupping therapy training'**
+  String get trainingIntroTitle;
+
+  /// No description provided for @trainingIntroDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn about practical training opportunities in cupping therapy. Program details will be shared when confirmed.'**
+  String get trainingIntroDescription;
+
+  /// No description provided for @trainingProgramsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Training details are coming soon'**
+  String get trainingProgramsEmptyTitle;
+
+  /// No description provided for @trainingProgramsEmptyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no confirmed programs to show right now. Verified course information and enrollment updates will appear here when available.'**
+  String get trainingProgramsEmptyDescription;
+
+  /// No description provided for @trainingEducationDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Training information is educational and does not replace medical advice or professional licensing requirements.'**
+  String get trainingEducationDisclaimer;
+
+  /// No description provided for @trainingIconLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Learning and education'**
+  String get trainingIconLabel;
+
   /// No description provided for @profileAndAccount.
   ///
   /// In en, this message translates to:
