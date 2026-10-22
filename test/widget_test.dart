@@ -12,6 +12,7 @@ import 'package:cupping_therapy/core/services/auth_storage.dart';
 import 'package:cupping_therapy/features/authentication/presentation/widgets/auth_form.dart';
 import 'package:cupping_therapy/features/authentication/presentation/screens/login_screen.dart';
 import 'package:cupping_therapy/features/home/presentation/screens/home_screen.dart';
+import 'package:cupping_therapy/features/profile/presentation/screens/profile_screen.dart';
 
 class FakeAuthStorage implements AuthStorage {
   FakeAuthStorage({this.isLoggedIn = false});
@@ -106,7 +107,7 @@ void main() {
     await tester.pump(const Duration(seconds: 2));
     await tester.pumpAndSettle();
 
-    expect(find.text('Home dashboard placeholder'), findsOneWidget);
+    expect(find.text('Welcome to Hijama Care'), findsOneWidget);
   });
 
   testWidgets('Successful login saves credentials and opens home', (
@@ -145,10 +146,79 @@ void main() {
     await tester.tap(find.text('Sign in'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Home dashboard placeholder'), findsOneWidget);
+    expect(find.text('Welcome to Hijama Care'), findsOneWidget);
     expect(await authStorage.hasActiveSession(), isTrue);
     expect(authStorage.credentials?.email, 'user@example.com');
     expect(authStorage.credentials?.password, 'password123');
+  });
+
+  testWidgets('Guest profile offers login and register without fake details', (
+    tester,
+  ) async {
+    final authStorage = FakeAuthStorage();
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [authStorageProvider.overrideWithValue(authStorage)],
+        child: const MaterialApp(home: ProfileScreen()),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Welcome, guest'), findsOneWidget);
+    expect(find.text('Login'), findsOneWidget);
+    expect(find.text('Register'), findsOneWidget);
+    expect(find.text('Log out'), findsNothing);
+    expect(find.text('Account details are not available yet.'), findsNothing);
+  });
+
+  testWidgets('Logout requires confirmation and clears session', (
+    tester,
+  ) async {
+    final authStorage = FakeAuthStorage(isLoggedIn: true);
+    final router = GoRouter(
+      initialLocation: '/profile',
+      routes: [
+        GoRoute(
+          path: '/profile',
+          name: RouteNames.profile,
+          builder: (context, state) => const ProfileScreen(),
+        ),
+        GoRoute(
+          path: '/login',
+          name: RouteNames.login,
+          builder: (context, state) =>
+              const Scaffold(body: Text('Login destination')),
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [authStorageProvider.overrideWithValue(authStorage)],
+        child: MaterialApp.router(routerConfig: router),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Log out'));
+    await tester.tap(find.text('Log out'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Log out?'), findsOneWidget);
+    expect(await authStorage.hasActiveSession(), isTrue);
+
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+    expect(await authStorage.hasActiveSession(), isTrue);
+
+    await tester.ensureVisible(find.text('Log out'));
+    await tester.tap(find.text('Log out'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Log out').last);
+    await tester.pumpAndSettle();
+
+    expect(await authStorage.hasActiveSession(), isFalse);
+    expect(find.text('Login destination'), findsOneWidget);
+    expect(router.canPop(), isFalse);
   });
 
   testWidgets('Auth form validates required fields and terms acceptance', (

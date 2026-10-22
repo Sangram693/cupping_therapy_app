@@ -251,7 +251,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           style: TextStyle(color: AppColors.textSecondary),
                         ),
                         TextButton(
-                          onPressed: () => context.goNamed(RouteNames.register),
+                          onPressed: () =>
+                              context.pushNamed(RouteNames.register),
                           style: TextButton.styleFrom(
                             foregroundColor: AppColors.primary,
                             padding: const EdgeInsets.symmetric(horizontal: 4),

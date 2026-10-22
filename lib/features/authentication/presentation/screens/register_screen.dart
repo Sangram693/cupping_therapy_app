@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/route_names.dart';
 import '../../../../core/services/app_color_service.dart';
+import '../../../../core/widgets/app_back_button.dart';
 import '../widgets/auth_form.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -32,6 +33,10 @@ class RegisterScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: AppBackButton(fallbackRouteName: RouteNames.login),
+                  ),
                   Center(
                     child: Container(
                       width: 96,
@@ -84,7 +89,13 @@ class RegisterScreen extends StatelessWidget {
                         style: TextStyle(color: AppColors.textSecondary),
                       ),
                       TextButton(
-                        onPressed: () => context.goNamed(RouteNames.login),
+                        onPressed: () {
+                          if (context.canPop()) {
+                            context.pop();
+                          } else {
+                            context.goNamed(RouteNames.login);
+                          }
+                        },
                         style: TextButton.styleFrom(
                           foregroundColor: AppColors.primary,
                           padding: const EdgeInsets.symmetric(horizontal: 4),
