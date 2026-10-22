@@ -14,6 +14,25 @@
     }
   },
   "welcomeSubtitle": "আপনার সুস্থতা ও শেখার যাত্রা শুরু হোক এখান থেকে।",
+  "homeCarouselImageLabel": "কাপিং থেরাপি ব্যবসার ছবি {imageNumber}",
+  "@homeCarouselImageLabel": {
+    "placeholders": {
+      "imageNumber": {
+        "type": "int"
+      }
+    }
+  },
+  "homeCarouselPageCounter": "{totalPages}-এর মধ্যে {currentPage}",
+  "@homeCarouselPageCounter": {
+    "placeholders": {
+      "currentPage": {
+        "type": "int"
+      },
+      "totalPages": {
+        "type": "int"
+      }
+    }
+  },
   "discoverTherapy": "কাপিং থেরাপি সম্পর্কে জানুন",
   "therapyServiceTitle": "কাপিং থেরাপি",
   "exploreServicesAndTraining": "আমাদের সেবা ও পেশাদার প্রশিক্ষণ কর্মসূচি সম্পর্কে জানুন।",

@@ -14,6 +14,25 @@
     }
   },
   "welcomeSubtitle": "Your wellness and learning journey starts here.",
+  "homeCarouselImageLabel": "Cupping therapy business image {imageNumber}",
+  "@homeCarouselImageLabel": {
+    "placeholders": {
+      "imageNumber": {
+        "type": "int"
+      }
+    }
+  },
+  "homeCarouselPageCounter": "{currentPage} of {totalPages}",
+  "@homeCarouselPageCounter": {
+    "placeholders": {
+      "currentPage": {
+        "type": "int"
+      },
+      "totalPages": {
+        "type": "int"
+      }
+    }
+  },
   "discoverTherapy": "Discover Cupping Therapy",
   "therapyServiceTitle": "Cupping Therapy",
   "exploreServicesAndTraining": "Explore our services and professional training programs.",

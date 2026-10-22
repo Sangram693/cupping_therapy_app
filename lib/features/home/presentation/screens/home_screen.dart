@@ -6,6 +6,7 @@ import '../../../../core/constants/app_dimensions.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../widgets/contact_card.dart';
 import '../widgets/home_header.dart';
+import '../widgets/home_image_carousel.dart';
 import '../widgets/home_promo_banner.dart';
 import '../widgets/quick_action_card.dart';
 import '../widgets/service_card.dart';
@@ -41,6 +42,8 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const HomeHeader(),
+                        const SizedBox(height: AppDimensions.spacing24),
+                        const HomeImageCarousel(),
                         const SizedBox(height: AppDimensions.spacing24),
                         HomePromoBanner(
                           onExplore: () =>

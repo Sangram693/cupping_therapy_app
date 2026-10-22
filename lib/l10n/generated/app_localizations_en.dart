@@ -34,6 +34,16 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your wellness and learning journey starts here.';
 
   @override
+  String homeCarouselImageLabel(int imageNumber) {
+    return 'Cupping therapy business image $imageNumber';
+  }
+
+  @override
+  String homeCarouselPageCounter(int currentPage, int totalPages) {
+    return '$currentPage of $totalPages';
+  }
+
+  @override
   String get discoverTherapy => 'Discover Cupping Therapy';
 
   @override

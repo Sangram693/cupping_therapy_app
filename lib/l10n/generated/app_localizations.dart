@@ -140,6 +140,18 @@ abstract class AppLocalizations {
   /// **'Your wellness and learning journey starts here.'**
   String get welcomeSubtitle;
 
+  /// No description provided for @homeCarouselImageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cupping therapy business image {imageNumber}'**
+  String homeCarouselImageLabel(int imageNumber);
+
+  /// No description provided for @homeCarouselPageCounter.
+  ///
+  /// In en, this message translates to:
+  /// **'{currentPage} of {totalPages}'**
+  String homeCarouselPageCounter(int currentPage, int totalPages);
+
   /// No description provided for @discoverTherapy.
   ///
   /// In en, this message translates to:

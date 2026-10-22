@@ -34,6 +34,16 @@ class AppLocalizationsBn extends AppLocalizations {
       'আপনার সুস্থতা ও শেখার যাত্রা শুরু হোক এখান থেকে।';
 
   @override
+  String homeCarouselImageLabel(int imageNumber) {
+    return 'কাপিং থেরাপি ব্যবসার ছবি $imageNumber';
+  }
+
+  @override
+  String homeCarouselPageCounter(int currentPage, int totalPages) {
+    return '$totalPages-এর মধ্যে $currentPage';
+  }
+
+  @override
   String get discoverTherapy => 'কাপিং থেরাপি সম্পর্কে জানুন';
 
   @override
