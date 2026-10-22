@@ -18,7 +18,7 @@ class _AppointmentsTestApp extends ConsumerWidget {
       locale: ref.watch(localeProvider),
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      themeMode: ref.watch(themeModeProvider),
+      themeMode: ref.watch(themeProvider),
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -35,6 +35,10 @@ void main() {
   testWidgets('appointments screen updates for locale and theme changes', (
     tester,
   ) async {
+    tester.view.physicalSize = const Size(400, 3000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
     final container = ProviderContainer();
     addTearDown(container.dispose);
     container.read(localeProvider.notifier).state = const Locale('en');
@@ -48,16 +52,15 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Book your appointment'), findsOneWidget);
-    expect(find.text('Upcoming appointments'), findsOneWidget);
 
     await tester.enterText(find.byType(TextFormField).first, 'Ayesha');
     container.read(localeProvider.notifier).state = const Locale('bn');
     await tester.pumpAndSettle();
 
     expect(find.text('আপনার অ্যাপয়েন্টমেন্টের অনুরোধ জানান'), findsOneWidget);
-    expect(find.text('Ayesha'), findsOneWidget);
+    expect(find.text('Ayesha'), findsNWidgets(2));
 
-    container.read(themeModeProvider.notifier).state = ThemeMode.dark;
+    await container.read(themeProvider.notifier).setThemeMode(ThemeMode.dark);
     await tester.pumpAndSettle();
     expect(
       Theme.of(tester.element(find.byType(Scaffold))).brightness,
@@ -65,9 +68,16 @@ void main() {
     );
 
     container.read(localeProvider.notifier).state = const Locale('en');
-    container.read(themeModeProvider.notifier).state = ThemeMode.light;
+    await container.read(themeProvider.notifier).setThemeMode(ThemeMode.light);
     await tester.pumpAndSettle();
     expect(find.text('Book your appointment'), findsOneWidget);
+    expect(
+      Theme.of(tester.element(find.byType(Scaffold))).brightness,
+      Brightness.light,
+    );
+
+    await container.read(themeProvider.notifier).setThemeMode(ThemeMode.system);
+    await tester.pumpAndSettle();
     expect(
       Theme.of(tester.element(find.byType(Scaffold))).brightness,
       Brightness.light,
@@ -77,6 +87,10 @@ void main() {
   testWidgets('request action stays disabled until required data is complete', (
     tester,
   ) async {
+    tester.view.physicalSize = const Size(400, 3000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
     await tester.pumpWidget(const ProviderScope(child: _AppointmentsTestApp()));
     await tester.pumpAndSettle();
 

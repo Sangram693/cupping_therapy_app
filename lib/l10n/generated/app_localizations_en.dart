@@ -215,6 +215,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get therapyServicesPlaceholder => 'Therapy services placeholder';
 
   @override
+  String get therapyServicesIntroTitle => 'Care, with your comfort in mind';
+
+  @override
+  String get therapyServicesIntroDescription =>
+      'Explore our cupping therapy and consultation options. Our team can help you learn more before you decide.';
+
+  @override
+  String get serviceCatalogPreviewNote =>
+      'Service information is still being prepared. These previews are not a confirmed service catalogue; please contact us to verify current services and details.';
+
+  @override
+  String get servicePreviewLabel => 'Preview information';
+
+  @override
+  String get viewServiceDetails => 'View details';
+
+  @override
+  String get serviceDetailsPreviewNote =>
+      'This is introductory information only. Details and availability have not been confirmed.';
+
+  @override
   String get trainingProgramsPlaceholder => 'Training programs placeholder';
 
   @override

@@ -214,6 +214,28 @@ class AppLocalizationsBn extends AppLocalizations {
   String get therapyServicesPlaceholder => 'থেরাপি সেবার তথ্য';
 
   @override
+  String get therapyServicesIntroTitle =>
+      'আপনার স্বাচ্ছন্দ্যকে গুরুত্ব দিয়ে যত্ন';
+
+  @override
+  String get therapyServicesIntroDescription =>
+      'কাপিং থেরাপি ও পরামর্শের বিকল্পগুলো দেখুন। সিদ্ধান্ত নেওয়ার আগে বিস্তারিত জানতে আমাদের দল আপনাকে সহায়তা করবে।';
+
+  @override
+  String get serviceCatalogPreviewNote =>
+      'সেবার তথ্য এখনো প্রস্তুত করা হচ্ছে। এই প্রাথমিক বিবরণগুলো নিশ্চিত সেবার তালিকা নয়; বর্তমান সেবা ও বিস্তারিত জানতে আমাদের সঙ্গে যোগাযোগ করুন।';
+
+  @override
+  String get servicePreviewLabel => 'প্রাথমিক তথ্য';
+
+  @override
+  String get viewServiceDetails => 'বিস্তারিত দেখুন';
+
+  @override
+  String get serviceDetailsPreviewNote =>
+      'এটি কেবল প্রাথমিক তথ্য। বিস্তারিত ও প্রাপ্যতা এখনো নিশ্চিত করা হয়নি।';
+
+  @override
   String get trainingProgramsPlaceholder => 'প্রশিক্ষণ কর্মসূচির তথ্য';
 
   @override

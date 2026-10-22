@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_dimensions.dart';
-import '../../../../core/services/app_color_service.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import 'appointment_time_selector.dart';
 import 'therapy_service_selector.dart';
@@ -70,7 +69,7 @@ class AppointmentSummaryCard extends StatelessWidget {
             Text(
               l10n.requestNotConfirmed,
               style: theme.textTheme.bodySmall?.copyWith(
-                color: AppColors.accent,
+                color: theme.colorScheme.secondary,
                 fontWeight: FontWeight.w600,
               ),
             ),

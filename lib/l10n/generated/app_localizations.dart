@@ -470,6 +470,42 @@ abstract class AppLocalizations {
   /// **'Therapy services placeholder'**
   String get therapyServicesPlaceholder;
 
+  /// No description provided for @therapyServicesIntroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Care, with your comfort in mind'**
+  String get therapyServicesIntroTitle;
+
+  /// No description provided for @therapyServicesIntroDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore our cupping therapy and consultation options. Our team can help you learn more before you decide.'**
+  String get therapyServicesIntroDescription;
+
+  /// No description provided for @serviceCatalogPreviewNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Service information is still being prepared. These previews are not a confirmed service catalogue; please contact us to verify current services and details.'**
+  String get serviceCatalogPreviewNote;
+
+  /// No description provided for @servicePreviewLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview information'**
+  String get servicePreviewLabel;
+
+  /// No description provided for @viewServiceDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View details'**
+  String get viewServiceDetails;
+
+  /// No description provided for @serviceDetailsPreviewNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This is introductory information only. Details and availability have not been confirmed.'**
+  String get serviceDetailsPreviewNote;
+
   /// No description provided for @trainingProgramsPlaceholder.
   ///
   /// In en, this message translates to:
