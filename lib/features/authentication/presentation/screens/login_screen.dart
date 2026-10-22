@@ -1,32 +1,97 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../app/di/providers.dart';
 import '../../../../app/router/route_names.dart';
 import '../../../../core/services/app_color_service.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../core/widgets/app_text_field.dart';
+import '../../../../core/constants/app_dimensions.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   bool _obscurePassword = true;
   bool _rememberMe = false;
+  bool _isSubmitting = false;
+  String? _storageError;
 
-  void _submit() {
-    if (_formKey.currentState?.validate() ?? false) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Login is not connected to a server yet.'),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+  @override
+  void initState() {
+    super.initState();
+    _loadRememberedCredentials();
+  }
+
+  Future<void> _loadRememberedCredentials() async {
+    try {
+      final credentials = await ref
+          .read(authStorageProvider)
+          .readRememberedCredentials();
+      if (mounted && credentials != null) {
+        setState(() {
+          _emailController.text = credentials.email;
+          _passwordController.text = credentials.password;
+          _rememberMe = true;
+        });
+      }
+    } catch (error) {
+      if (mounted) {
+        setState(
+          () => _storageError = 'Unable to load saved sign-in details: $error',
+        );
+      }
     }
+  }
+
+  Future<void> _submit() async {
+    if (_isSubmitting || !(_formKey.currentState?.validate() ?? false)) {
+      return;
+    }
+
+    setState(() {
+      _isSubmitting = true;
+      _storageError = null;
+    });
+
+    try {
+      final authStorage = ref.read(authStorageProvider);
+      if (_rememberMe) {
+        await authStorage.saveRememberedCredentials(
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+        );
+      } else {
+        await authStorage.clearRememberedCredentials();
+      }
+      await authStorage.setSessionActive(true);
+      if (mounted) {
+        context.goNamed(RouteNames.home);
+      }
+    } catch (error) {
+      if (mounted) {
+        setState(() => _storageError = 'Unable to save sign-in state: $error');
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isSubmitting = false);
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -48,11 +113,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Center(
                       child: Container(
-                        width: 104,
-                        height: 104,
-                        padding: const EdgeInsets.all(8),
+                        width: AppDimensions.imageLarge,
+                        height: AppDimensions.imageLarge,
+                        // padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: AppColors.surface,
+                          color: AppColors.primary.withValues(alpha: 0.6),
                           borderRadius: BorderRadius.circular(28),
                           border: Border.all(color: AppColors.border),
                         ),
@@ -92,6 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 8),
                     AppTextField(
+                      controller: _emailController,
                       labelText: 'Email',
                       hintText: 'you@example.com',
                       prefixIcon: Icons.email_outlined,
@@ -108,6 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 8),
                     AppTextField(
+                      controller: _passwordController,
                       labelText: 'Password',
                       hintText: 'Enter your password',
                       prefixIcon: Icons.lock_outline,
@@ -142,18 +209,35 @@ class _LoginScreenState extends State<LoginScreen> {
                         const Spacer(),
                       ],
                     ),
+                    if (_storageError != null) ...[
+                      Text(
+                        _storageError!,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                    ],
                     const SizedBox(height: 20),
                     SizedBox(
                       height: 54,
                       child: ElevatedButton(
-                        onPressed: _submit,
-                        child: const Text(
-                          'Sign in',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                        onPressed: _isSubmitting ? null : _submit,
+                        child: _isSubmitting
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Text(
+                                'Sign in',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                       ),
                     ),
                     const SizedBox(height: 24),

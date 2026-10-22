@@ -1,11 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:cupping_therapy/app/app.dart';
+import 'package:cupping_therapy/app/di/providers.dart';
+import 'package:cupping_therapy/app/router/route_names.dart';
 import 'package:cupping_therapy/app/theme/app_theme.dart';
 import 'package:cupping_therapy/core/services/app_color_service.dart';
+import 'package:cupping_therapy/core/services/auth_storage.dart';
 import 'package:cupping_therapy/features/authentication/presentation/widgets/auth_form.dart';
+import 'package:cupping_therapy/features/authentication/presentation/screens/login_screen.dart';
+import 'package:cupping_therapy/features/home/presentation/screens/home_screen.dart';
+
+class FakeAuthStorage implements AuthStorage {
+  FakeAuthStorage({this.isLoggedIn = false});
+
+  bool isLoggedIn;
+  RememberedCredentials? credentials;
+
+  @override
+  Future<bool> hasActiveSession() async => isLoggedIn;
+
+  @override
+  Future<void> setSessionActive(bool isActive) async {
+    isLoggedIn = isActive;
+  }
+
+  @override
+  Future<RememberedCredentials?> readRememberedCredentials() async =>
+      credentials;
+
+  @override
+  Future<void> saveRememberedCredentials({
+    required String email,
+    required String password,
+  }) async {
+    credentials = RememberedCredentials(email: email, password: password);
+  }
+
+  @override
+  Future<void> clearRememberedCredentials() async {
+    credentials = null;
+  }
+}
 
 void main() {
   test('AppColors palette uses the required brand values', () {
@@ -39,13 +77,78 @@ void main() {
   testWidgets('Splash screen navigates to login after two seconds', (
     tester,
   ) async {
-    await tester.pumpWidget(const ProviderScope(child: App()));
+    final authStorage = FakeAuthStorage();
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [authStorageProvider.overrideWithValue(authStorage)],
+        child: const App(),
+      ),
+    );
     expect(find.text('Preparing your care experience...'), findsOneWidget);
 
     await tester.pump(const Duration(seconds: 2));
     await tester.pumpAndSettle();
 
     expect(find.text('Welcome back'), findsOneWidget);
+  });
+
+  testWidgets('Splash screen opens home when a session was saved', (
+    tester,
+  ) async {
+    final authStorage = FakeAuthStorage(isLoggedIn: true);
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [authStorageProvider.overrideWithValue(authStorage)],
+        child: const App(),
+      ),
+    );
+
+    await tester.pump(const Duration(seconds: 2));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Home dashboard placeholder'), findsOneWidget);
+  });
+
+  testWidgets('Successful login saves credentials and opens home', (
+    tester,
+  ) async {
+    final authStorage = FakeAuthStorage();
+    final router = GoRouter(
+      initialLocation: '/login',
+      routes: [
+        GoRoute(
+          path: '/login',
+          name: RouteNames.login,
+          builder: (context, state) => const LoginScreen(),
+        ),
+        GoRoute(
+          path: '/home',
+          name: RouteNames.home,
+          builder: (context, state) => const HomeScreen(),
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [authStorageProvider.overrideWithValue(authStorage)],
+        child: MaterialApp.router(routerConfig: router),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.enterText(
+      find.byType(TextFormField).at(0),
+      'user@example.com',
+    );
+    await tester.enterText(find.byType(TextFormField).at(1), 'password123');
+    await tester.tap(find.byType(Checkbox));
+    await tester.tap(find.text('Sign in'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Home dashboard placeholder'), findsOneWidget);
+    expect(await authStorage.hasActiveSession(), isTrue);
+    expect(authStorage.credentials?.email, 'user@example.com');
+    expect(authStorage.credentials?.password, 'password123');
   });
 
   testWidgets('Auth form validates required fields and terms acceptance', (

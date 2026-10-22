@@ -3,11 +3,16 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/constants/app_constants.dart';
 import '../../core/network/api_client.dart';
+import '../../core/services/auth_storage.dart';
 import '../../core/services/notification_service.dart';
 import '../../core/utils/logger.dart';
 import '../router/app_router.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) => AppRouter().router);
+
+final authStorageProvider = Provider<AuthStorage>(
+  (ref) => throw StateError('AuthStorage must be initialized before the app.'),
+);
 
 final appLoggerProvider = Provider<AppLogger>((ref) => const AppLogger());
 
