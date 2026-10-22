@@ -1,30 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../app/router/route_names.dart';
 import '../../../../core/constants/app_dimensions.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import 'home_image_assets.dart';
 
 class HomeImageCarousel extends StatefulWidget {
   const HomeImageCarousel({super.key});
-
-  static const List<String> _imagePaths = [
-    'assets/images/image1.jpg',
-    'assets/images/image2.jpg',
-    'assets/images/image3.jpg',
-    'assets/images/image4.jpg',
-    'assets/images/image5.jpg',
-    'assets/images/image6.jpg',
-    'assets/images/image7.jpg',
-    'assets/images/image8.jpg',
-    'assets/images/image9.jpg',
-    'assets/images/image10.jpg',
-  ];
 
   @override
   State<HomeImageCarousel> createState() => _HomeImageCarouselState();
 }
 
 class _HomeImageCarouselState extends State<HomeImageCarousel> {
+  final PageController _pageController = PageController();
   int _currentPage = 0;
+  bool _isOpeningViewer = false;
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _handlePageChanged(int page) {
+    if (_currentPage != page) {
+      setState(() => _currentPage = page);
+    }
+  }
+
+  void _syncPageWithViewer(int page) {
+    if (!mounted || page < 0 || page >= HomeImageAssets.paths.length) {
+      return;
+    }
+    _pageController.jumpToPage(page);
+    _handlePageChanged(page);
+  }
+
+  Future<void> _openViewer(int index) async {
+    if (_isOpeningViewer) {
+      return;
+    }
+    _isOpeningViewer = true;
+    try {
+      await context.pushNamed<void>(
+        RouteNames.homeImageViewer,
+        pathParameters: {'index': '$index'},
+        extra: _syncPageWithViewer,
+      );
+    } finally {
+      _isOpeningViewer = false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,25 +75,42 @@ class _HomeImageCarouselState extends State<HomeImageCarousel> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(AppDimensions.radiusXLarge),
                 child: PageView.builder(
-                  itemCount: HomeImageCarousel._imagePaths.length,
-                  onPageChanged: (page) {
-                    setState(() => _currentPage = page);
-                  },
+                  controller: _pageController,
+                  itemCount: HomeImageAssets.paths.length,
+                  onPageChanged: _handlePageChanged,
                   itemBuilder: (context, index) {
                     final imageLabel = l10n.homeCarouselImageLabel(index + 1);
-                    return Image.asset(
-                      HomeImageCarousel._imagePaths[index],
-                      fit: BoxFit.cover,
-                      semanticLabel: imageLabel,
-                      errorBuilder: (context, error, stackTrace) => Semantics(
-                        label: imageLabel,
-                        child: ColoredBox(
-                          color: colorScheme.surfaceContainerHighest,
-                          child: Center(
-                            child: Icon(
-                              Icons.broken_image_outlined,
-                              size: AppDimensions.iconXLarge,
-                              color: colorScheme.onSurfaceVariant,
+                    return Semantics(
+                      button: true,
+                      label: l10n.homeCarouselOpenImage(index + 1),
+                      child: InkWell(
+                        key: ValueKey(HomeImageAssets.heroTag(index)),
+                        onTap: () => _openViewer(index),
+                        child: Hero(
+                          tag: HomeImageAssets.heroTag(index),
+                          child: Container(
+                            height: double.infinity,
+                            width: double.infinity,
+                            color: colorScheme.surfaceContainerHighest,
+                            alignment: Alignment.center,
+                            child: Image.asset(
+                              HomeImageAssets.paths[index],
+                              fit: BoxFit.contain,
+                              semanticLabel: imageLabel,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Semantics(
+                                    label: imageLabel,
+                                    child: ColoredBox(
+                                      color: colorScheme.surfaceContainerHighest,
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.broken_image_outlined,
+                                          size: AppDimensions.iconXLarge,
+                                          color: colorScheme.onSurfaceVariant,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                             ),
                           ),
                         ),
@@ -83,7 +128,7 @@ class _HomeImageCarouselState extends State<HomeImageCarousel> {
           children: [
             for (
               var index = 0;
-              index < HomeImageCarousel._imagePaths.length;
+              index < HomeImageAssets.paths.length;
               index++
             ) ...[
               if (index > 0) const SizedBox(width: AppDimensions.spacing4),
@@ -110,12 +155,12 @@ class _HomeImageCarouselState extends State<HomeImageCarousel> {
             Semantics(
               label: l10n.homeCarouselPageCounter(
                 _currentPage + 1,
-                HomeImageCarousel._imagePaths.length,
+                HomeImageAssets.paths.length,
               ),
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 200),
                 child: Text(
-                  '${_currentPage + 1} / ${HomeImageCarousel._imagePaths.length}',
+                  '${_currentPage + 1} / ${HomeImageAssets.paths.length}',
                   key: ValueKey(_currentPage),
                   style: Theme.of(context).textTheme.labelMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,

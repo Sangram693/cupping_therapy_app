@@ -44,6 +44,19 @@ class AppLocalizationsBn extends AppLocalizations {
   }
 
   @override
+  String homeCarouselOpenImage(int imageNumber) {
+    return 'কাপিং থেরাপি ব্যবসার ছবি $imageNumber খুলুন';
+  }
+
+  @override
+  String get homeImageViewerClose => 'ছবি দেখার পর্দা বন্ধ করুন';
+
+  @override
+  String homeImageViewerPosition(int currentPage, int totalPages) {
+    return '$totalPages-টির মধ্যে ছবি $currentPage';
+  }
+
+  @override
   String get discoverTherapy => 'কাপিং থেরাপি সম্পর্কে জানুন';
 
   @override

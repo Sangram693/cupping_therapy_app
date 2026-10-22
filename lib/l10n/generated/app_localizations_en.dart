@@ -44,6 +44,19 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String homeCarouselOpenImage(int imageNumber) {
+    return 'Open cupping therapy business image $imageNumber';
+  }
+
+  @override
+  String get homeImageViewerClose => 'Close image viewer';
+
+  @override
+  String homeImageViewerPosition(int currentPage, int totalPages) {
+    return 'Image $currentPage of $totalPages';
+  }
+
+  @override
   String get discoverTherapy => 'Discover Cupping Therapy';
 
   @override

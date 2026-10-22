@@ -152,6 +152,24 @@ abstract class AppLocalizations {
   /// **'{currentPage} of {totalPages}'**
   String homeCarouselPageCounter(int currentPage, int totalPages);
 
+  /// No description provided for @homeCarouselOpenImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Open cupping therapy business image {imageNumber}'**
+  String homeCarouselOpenImage(int imageNumber);
+
+  /// No description provided for @homeImageViewerClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close image viewer'**
+  String get homeImageViewerClose;
+
+  /// No description provided for @homeImageViewerPosition.
+  ///
+  /// In en, this message translates to:
+  /// **'Image {currentPage} of {totalPages}'**
+  String homeImageViewerPosition(int currentPage, int totalPages);
+
   /// No description provided for @discoverTherapy.
   ///
   /// In en, this message translates to:

@@ -33,6 +33,26 @@
       }
     }
   },
+  "homeCarouselOpenImage": "Open cupping therapy business image {imageNumber}",
+  "@homeCarouselOpenImage": {
+    "placeholders": {
+      "imageNumber": {
+        "type": "int"
+      }
+    }
+  },
+  "homeImageViewerClose": "Close image viewer",
+  "homeImageViewerPosition": "Image {currentPage} of {totalPages}",
+  "@homeImageViewerPosition": {
+    "placeholders": {
+      "currentPage": {
+        "type": "int"
+      },
+      "totalPages": {
+        "type": "int"
+      }
+    }
+  },
   "discoverTherapy": "Discover Cupping Therapy",
   "therapyServiceTitle": "Cupping Therapy",
   "exploreServicesAndTraining": "Explore our services and professional training programs.",

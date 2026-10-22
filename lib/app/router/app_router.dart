@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/appointments/presentation/screens/appointments_screen.dart';
 import '../../features/authentication/presentation/screens/login_screen.dart';
 import '../../features/authentication/presentation/screens/register_screen.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
+import '../../features/home/presentation/screens/home_image_viewer_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
 import '../../features/settings/presentation/screens/settings_screen.dart';
 import '../../features/splash/presentation/screens/splash_screen.dart';
@@ -28,6 +30,19 @@ class AppRouter {
         path: '/${RouteNames.home}',
         name: RouteNames.home,
         builder: (context, state) => const HomeScreen(),
+      ),
+      GoRoute(
+        path: '/${RouteNames.home}/image/:index',
+        name: RouteNames.homeImageViewer,
+        builder: (context, state) {
+          final index = int.tryParse(state.pathParameters['index'] ?? '');
+          return HomeImageViewerScreen(
+            initialIndex: index ?? 0,
+            onPageChanged: state.extra is ValueChanged<int>
+                ? state.extra as ValueChanged<int>
+                : null,
+          );
+        },
       ),
       GoRoute(
         path: '/${RouteNames.login}',
