@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../app/di/providers.dart';
 import '../../../../app/router/route_names.dart';
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/services/app_color_service.dart';
 import '../../../../core/widgets/app_back_button.dart';
@@ -194,7 +195,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   void _showAboutDialog() {
     showAboutDialog(
       context: context,
-      applicationName: 'Hijama Therapy',
+      applicationName: AppConstants.appName,
       applicationIcon: const Icon(
         Icons.spa_outlined,
         color: AppColors.primary,

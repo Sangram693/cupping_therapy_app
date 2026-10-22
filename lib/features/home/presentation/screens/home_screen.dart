@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/route_names.dart';
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/services/app_color_service.dart';
 import '../widgets/contact_card.dart';
@@ -207,7 +208,7 @@ class _ServiceCards extends StatelessWidget {
     final services = [
       (
         icon: Icons.spa_outlined,
-        title: 'Hijama Therapy',
+        title: AppConstants.appName,
         description: 'Contact us for service details and availability.',
       ),
       (

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/di/providers.dart';
 import '../../../../app/router/route_names.dart';
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/services/app_color_service.dart';
 
@@ -118,7 +119,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                               child: Image.asset(
                                 'assets/images/app_logo.jpg',
                                 fit: BoxFit.contain,
-                                semanticLabel: 'Hijama Care logo',
+                                semanticLabel: '${AppConstants.appName} logo',
                                 errorBuilder: (context, error, stackTrace) =>
                                     const Center(
                                       child: Icon(
@@ -138,7 +139,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                           ),
                           const SizedBox(height: AppDimensions.spacing8),
                           Text(
-                            'Hijama Care',
+                            AppConstants.appName,
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.headlineMedium
                                 ?.copyWith(

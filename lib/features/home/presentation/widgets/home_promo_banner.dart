@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/services/app_color_service.dart';
 
@@ -44,7 +45,7 @@ class HomePromoBanner extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Discover Hijama Therapy',
+                        'Discover ${AppConstants.appName}',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: AppColors.surface,
                           fontWeight: FontWeight.w700,

@@ -7,6 +7,7 @@ import 'package:cupping_therapy/app/app.dart';
 import 'package:cupping_therapy/app/di/providers.dart';
 import 'package:cupping_therapy/app/router/route_names.dart';
 import 'package:cupping_therapy/app/theme/app_theme.dart';
+import 'package:cupping_therapy/core/constants/app_constants.dart';
 import 'package:cupping_therapy/core/services/app_color_service.dart';
 import 'package:cupping_therapy/core/services/auth_storage.dart';
 import 'package:cupping_therapy/features/authentication/presentation/widgets/auth_form.dart';
@@ -122,7 +123,7 @@ void main() {
     await tester.pump(const Duration(seconds: 2));
     await tester.pumpAndSettle();
 
-    expect(find.text('Welcome to Hijama Care'), findsOneWidget);
+    expect(find.text('Welcome to ${AppConstants.appName}'), findsOneWidget);
   });
 
   testWidgets('Splash screen can retry after session restoration fails', (
@@ -145,7 +146,7 @@ void main() {
     await tester.tap(find.text('Retry'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Welcome to Hijama Care'), findsOneWidget);
+    expect(find.text('Welcome to ${AppConstants.appName}'), findsOneWidget);
   });
 
   testWidgets('Successful login saves credentials and opens home', (
@@ -184,7 +185,7 @@ void main() {
     await tester.tap(find.text('Sign in'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Welcome to Hijama Care'), findsOneWidget);
+    expect(find.text('Welcome to ${AppConstants.appName}'), findsOneWidget);
     expect(await authStorage.hasActiveSession(), isTrue);
     expect(authStorage.credentials?.email, 'user@example.com');
     expect(authStorage.credentials?.password, 'password123');
