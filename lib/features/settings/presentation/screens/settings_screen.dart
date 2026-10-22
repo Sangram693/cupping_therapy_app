@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/router/route_names.dart';
 import '../../../../core/constants/app_dimensions.dart';
-import '../../../../core/services/app_color_service.dart';
 import '../../../../core/widgets/app_back_button.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../providers/locale_provider.dart';
@@ -59,13 +58,13 @@ class SettingsScreen extends ConsumerWidget {
                         RadioListTile<Locale>(
                           value: const Locale('en'),
                           title: Text(l10n.english),
-                          activeColor: AppColors.primary,
+                          activeColor: colorScheme.primary,
                           contentPadding: EdgeInsets.zero,
                         ),
                         RadioListTile<Locale>(
                           value: const Locale('bn'),
                           title: Text(l10n.bengali),
-                          activeColor: AppColors.primary,
+                          activeColor: colorScheme.primary,
                           contentPadding: EdgeInsets.zero,
                         ),
                       ],
@@ -108,19 +107,19 @@ class SettingsScreen extends ConsumerWidget {
                         RadioListTile<ThemeMode>(
                           value: ThemeMode.system,
                           title: Text(l10n.systemDefault),
-                          activeColor: AppColors.primary,
+                          activeColor: colorScheme.primary,
                           contentPadding: EdgeInsets.zero,
                         ),
                         RadioListTile<ThemeMode>(
                           value: ThemeMode.light,
                           title: Text(l10n.lightTheme),
-                          activeColor: AppColors.primary,
+                          activeColor: colorScheme.primary,
                           contentPadding: EdgeInsets.zero,
                         ),
                         RadioListTile<ThemeMode>(
                           value: ThemeMode.dark,
                           title: Text(l10n.darkTheme),
-                          activeColor: AppColors.primary,
+                          activeColor: colorScheme.primary,
                           contentPadding: EdgeInsets.zero,
                         ),
                       ],

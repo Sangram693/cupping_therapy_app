@@ -34,10 +34,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your wellness and learning journey starts here.';
 
   @override
-  String get discoverTherapy => 'Discover Hijama Therapy';
+  String get discoverTherapy => 'Discover Cupping Therapy';
 
   @override
-  String get therapyServiceTitle => 'Hijama Therapy';
+  String get therapyServiceTitle => 'Cupping Therapy';
 
   @override
   String get exploreServicesAndTraining =>
@@ -50,7 +50,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exploreTraining => 'Explore Training';
 
   @override
-  String get trainingPromoTitle => 'Hijama training';
+  String get trainingPromoTitle => 'Cupping training';
 
   @override
   String get trainingPromoDescription =>
@@ -126,6 +126,89 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appointmentsPlaceholder => 'Appointments placeholder';
 
   @override
+  String get appointmentIntroTitle => 'Book your appointment';
+
+  @override
+  String get appointmentIntroDescription =>
+      'Tell us which service and preferred time work for you. We will contact you to confirm the details.';
+
+  @override
+  String get bookingStepService => 'Choose a service';
+
+  @override
+  String get bookingStepDateTime => 'Select a preferred date and time';
+
+  @override
+  String get bookingStepRequest => 'Send your appointment request';
+
+  @override
+  String get serviceSelection => 'Choose a service';
+
+  @override
+  String get serviceOptionsNote =>
+      'These are preview options only. Service details and appointment availability will be confirmed by our team.';
+
+  @override
+  String get preferredDate => 'Preferred date';
+
+  @override
+  String get selectPreferredDate => 'Select a preferred date';
+
+  @override
+  String get dateAvailabilityNote =>
+      'This is a date preference, not a confirmed available appointment.';
+
+  @override
+  String get preferredTime => 'Preferred time';
+
+  @override
+  String get preferredTimeNote =>
+      'Choose a time of day that suits you. These preferences are not confirmed time slots.';
+
+  @override
+  String get morning => 'Morning';
+
+  @override
+  String get afternoon => 'Afternoon';
+
+  @override
+  String get evening => 'Evening';
+
+  @override
+  String get phoneNumber => 'Phone number';
+
+  @override
+  String get phoneNumberHint => 'Enter your phone number';
+
+  @override
+  String get bookingSummary => 'Request summary';
+
+  @override
+  String get notSelected => 'Not selected';
+
+  @override
+  String get requestNotConfirmed =>
+      'Your appointment is not confirmed until our team contacts you.';
+
+  @override
+  String get requestAppointment => 'Request appointment';
+
+  @override
+  String get completeRequiredDetails =>
+      'Choose a service, date and preferred time, and enter your contact details to continue.';
+
+  @override
+  String get appointmentRequestUnavailable =>
+      'Appointment requests cannot be submitted in the app yet. Your details have not been sent or saved.';
+
+  @override
+  String get upcomingAppointments => 'Upcoming appointments';
+
+  @override
+  String get appointmentsEmptyState =>
+      'Confirmed appointments will appear here when appointment information is available.';
+
+  @override
   String get therapyServices => 'Therapy Services';
 
   @override
@@ -199,7 +282,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutDescription =>
-      'An app for exploring Hijama therapy services and training information.';
+      'An app for exploring cupping therapy services and training information.';
 
   @override
   String get loadingAccount => 'Loading account…';

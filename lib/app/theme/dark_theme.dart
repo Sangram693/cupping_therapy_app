@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/services/app_color_service.dart';
 
 ThemeData buildDarkTheme() {
+  const darkError = Color(0xFFFFB4AB);
   final baseTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
@@ -12,7 +13,7 @@ ThemeData buildDarkTheme() {
       primary: AppColors.secondary,
       secondary: AppColors.secondary,
       surface: const Color(0xFF10251D),
-      error: AppColors.error,
+      error: darkError,
     ),
   );
 
@@ -51,7 +52,7 @@ ThemeData buildDarkTheme() {
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AppColors.error),
+        borderSide: const BorderSide(color: darkError),
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       labelStyle: const TextStyle(color: Color(0xFFEAF7F0)),

@@ -34,10 +34,10 @@ class AppLocalizationsBn extends AppLocalizations {
       'আপনার সুস্থতা ও শেখার যাত্রা শুরু হোক এখান থেকে।';
 
   @override
-  String get discoverTherapy => 'হিজামা থেরাপি সম্পর্কে জানুন';
+  String get discoverTherapy => 'কাপিং থেরাপি সম্পর্কে জানুন';
 
   @override
-  String get therapyServiceTitle => 'হিজামা থেরাপি';
+  String get therapyServiceTitle => 'কাপিং থেরাপি';
 
   @override
   String get exploreServicesAndTraining =>
@@ -50,7 +50,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get exploreTraining => 'প্রশিক্ষণ দেখুন';
 
   @override
-  String get trainingPromoTitle => 'হিজামা প্রশিক্ষণ';
+  String get trainingPromoTitle => 'কাপিং প্রশিক্ষণ';
 
   @override
   String get trainingPromoDescription =>
@@ -123,6 +123,89 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get appointmentsPlaceholder => 'অ্যাপয়েন্টমেন্টের তথ্য';
+
+  @override
+  String get appointmentIntroTitle => 'আপনার অ্যাপয়েন্টমেন্টের অনুরোধ জানান';
+
+  @override
+  String get appointmentIntroDescription =>
+      'আপনার পছন্দের সেবা ও সময় জানান। বিস্তারিত নিশ্চিত করতে আমরা আপনার সঙ্গে যোগাযোগ করব।';
+
+  @override
+  String get bookingStepService => 'একটি সেবা বেছে নিন';
+
+  @override
+  String get bookingStepDateTime => 'পছন্দের তারিখ ও সময় নির্বাচন করুন';
+
+  @override
+  String get bookingStepRequest => 'অ্যাপয়েন্টমেন্টের অনুরোধ পাঠান';
+
+  @override
+  String get serviceSelection => 'সেবা বেছে নিন';
+
+  @override
+  String get serviceOptionsNote =>
+      'এগুলো প্রাথমিক বিকল্প মাত্র। সেবার বিস্তারিত ও অ্যাপয়েন্টমেন্টের প্রাপ্যতা আমাদের দল নিশ্চিত করবে।';
+
+  @override
+  String get preferredDate => 'পছন্দের তারিখ';
+
+  @override
+  String get selectPreferredDate => 'পছন্দের তারিখ নির্বাচন করুন';
+
+  @override
+  String get dateAvailabilityNote =>
+      'এটি আপনার পছন্দের তারিখ, নিশ্চিতভাবে উপলভ্য অ্যাপয়েন্টমেন্ট নয়।';
+
+  @override
+  String get preferredTime => 'পছন্দের সময়';
+
+  @override
+  String get preferredTimeNote =>
+      'আপনার সুবিধামতো দিনের সময় বেছে নিন। এগুলো নিশ্চিত সময়সূচি নয়।';
+
+  @override
+  String get morning => 'সকাল';
+
+  @override
+  String get afternoon => 'দুপুর';
+
+  @override
+  String get evening => 'সন্ধ্যা';
+
+  @override
+  String get phoneNumber => 'ফোন নম্বর';
+
+  @override
+  String get phoneNumberHint => 'আপনার ফোন নম্বর লিখুন';
+
+  @override
+  String get bookingSummary => 'অনুরোধের সারসংক্ষেপ';
+
+  @override
+  String get notSelected => 'নির্বাচন করা হয়নি';
+
+  @override
+  String get requestNotConfirmed =>
+      'আমাদের দল আপনার সঙ্গে যোগাযোগ না করা পর্যন্ত অ্যাপয়েন্টমেন্ট নিশ্চিত নয়।';
+
+  @override
+  String get requestAppointment => 'অ্যাপয়েন্টমেন্টের অনুরোধ জানান';
+
+  @override
+  String get completeRequiredDetails =>
+      'এগিয়ে যেতে সেবা, তারিখ ও পছন্দের সময় নির্বাচন করুন এবং যোগাযোগের তথ্য লিখুন।';
+
+  @override
+  String get appointmentRequestUnavailable =>
+      'অ্যাপ থেকে এখনো অ্যাপয়েন্টমেন্টের অনুরোধ পাঠানো যায় না। আপনার তথ্য পাঠানো বা সংরক্ষণ করা হয়নি।';
+
+  @override
+  String get upcomingAppointments => 'আসন্ন অ্যাপয়েন্টমেন্ট';
+
+  @override
+  String get appointmentsEmptyState =>
+      'অ্যাপয়েন্টমেন্টের তথ্য পাওয়া গেলে নিশ্চিত অ্যাপয়েন্টমেন্টগুলো এখানে দেখা যাবে।';
 
   @override
   String get therapyServices => 'থেরাপি সেবাসমূহ';
@@ -199,7 +282,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get aboutDescription =>
-      'হিজামা থেরাপি সেবা ও প্রশিক্ষণ সম্পর্কে জানার একটি অ্যাপ।';
+      'কাপিং থেরাপি সেবা ও প্রশিক্ষণ সম্পর্কে জানার একটি অ্যাপ।';
 
   @override
   String get loadingAccount => 'অ্যাকাউন্টের তথ্য লোড হচ্ছে…';

@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/route_names.dart';
 import '../../../../core/constants/app_dimensions.dart';
-import '../../../../core/services/app_color_service.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 
 class HomeHeader extends StatelessWidget {
@@ -24,7 +23,7 @@ class HomeHeader extends StatelessWidget {
               Text(
                 l10n.welcomeMessage(l10n.appName),
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: AppColors.primary,
+                  color: colorScheme.primary,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -46,7 +45,7 @@ class HomeHeader extends StatelessWidget {
             minHeight: AppDimensions.buttonHeight,
           ),
           style: IconButton.styleFrom(
-            foregroundColor: AppColors.primary,
+            foregroundColor: colorScheme.primary,
             backgroundColor: colorScheme.surface,
             side: BorderSide(color: colorScheme.outlineVariant),
           ),

@@ -26,9 +26,9 @@ class ContactCard extends StatelessWidget {
                 color: AppColors.primary.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.location_on_outlined,
-                color: AppColors.primary,
+                color: colorScheme.primary,
                 size: AppDimensions.iconMedium,
               ),
             ),
@@ -46,7 +46,7 @@ class ContactCard extends StatelessWidget {
             IconButton(
               onPressed: onContact,
               tooltip: l10n.contactUsForDetails,
-              color: AppColors.primary,
+              color: colorScheme.primary,
               icon: const Icon(Icons.arrow_forward_rounded),
             ),
           ],

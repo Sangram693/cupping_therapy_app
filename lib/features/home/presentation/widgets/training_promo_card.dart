@@ -32,9 +32,9 @@ class TrainingPromoCard extends StatelessWidget {
                       AppDimensions.radiusMedium,
                     ),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.menu_book_outlined,
-                    color: AppColors.primary,
+                    color: colorScheme.primary,
                     size: AppDimensions.iconMedium,
                   ),
                 ),
@@ -71,7 +71,7 @@ class TrainingPromoCard extends StatelessWidget {
               child: OutlinedButton(
                 onPressed: onExplore,
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.primary,
+                  foregroundColor: colorScheme.primary,
                   side: BorderSide(color: colorScheme.outlineVariant),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(

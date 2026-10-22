@@ -143,13 +143,13 @@ abstract class AppLocalizations {
   /// No description provided for @discoverTherapy.
   ///
   /// In en, this message translates to:
-  /// **'Discover Hijama Therapy'**
+  /// **'Discover Cupping Therapy'**
   String get discoverTherapy;
 
   /// No description provided for @therapyServiceTitle.
   ///
   /// In en, this message translates to:
-  /// **'Hijama Therapy'**
+  /// **'Cupping Therapy'**
   String get therapyServiceTitle;
 
   /// No description provided for @exploreServicesAndTraining.
@@ -173,7 +173,7 @@ abstract class AppLocalizations {
   /// No description provided for @trainingPromoTitle.
   ///
   /// In en, this message translates to:
-  /// **'Hijama training'**
+  /// **'Cupping training'**
   String get trainingPromoTitle;
 
   /// No description provided for @trainingPromoDescription.
@@ -307,6 +307,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Appointments placeholder'**
   String get appointmentsPlaceholder;
+
+  /// No description provided for @appointmentIntroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Book your appointment'**
+  String get appointmentIntroTitle;
+
+  /// No description provided for @appointmentIntroDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us which service and preferred time work for you. We will contact you to confirm the details.'**
+  String get appointmentIntroDescription;
+
+  /// No description provided for @bookingStepService.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a service'**
+  String get bookingStepService;
+
+  /// No description provided for @bookingStepDateTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a preferred date and time'**
+  String get bookingStepDateTime;
+
+  /// No description provided for @bookingStepRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Send your appointment request'**
+  String get bookingStepRequest;
+
+  /// No description provided for @serviceSelection.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a service'**
+  String get serviceSelection;
+
+  /// No description provided for @serviceOptionsNote.
+  ///
+  /// In en, this message translates to:
+  /// **'These are preview options only. Service details and appointment availability will be confirmed by our team.'**
+  String get serviceOptionsNote;
+
+  /// No description provided for @preferredDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred date'**
+  String get preferredDate;
+
+  /// No description provided for @selectPreferredDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a preferred date'**
+  String get selectPreferredDate;
+
+  /// No description provided for @dateAvailabilityNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a date preference, not a confirmed available appointment.'**
+  String get dateAvailabilityNote;
+
+  /// No description provided for @preferredTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred time'**
+  String get preferredTime;
+
+  /// No description provided for @preferredTimeNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a time of day that suits you. These preferences are not confirmed time slots.'**
+  String get preferredTimeNote;
+
+  /// No description provided for @morning.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning'**
+  String get morning;
+
+  /// No description provided for @afternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Afternoon'**
+  String get afternoon;
+
+  /// No description provided for @evening.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening'**
+  String get evening;
+
+  /// No description provided for @phoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get phoneNumber;
+
+  /// No description provided for @phoneNumberHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your phone number'**
+  String get phoneNumberHint;
+
+  /// No description provided for @bookingSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Request summary'**
+  String get bookingSummary;
+
+  /// No description provided for @notSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Not selected'**
+  String get notSelected;
+
+  /// No description provided for @requestNotConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Your appointment is not confirmed until our team contacts you.'**
+  String get requestNotConfirmed;
+
+  /// No description provided for @requestAppointment.
+  ///
+  /// In en, this message translates to:
+  /// **'Request appointment'**
+  String get requestAppointment;
+
+  /// No description provided for @completeRequiredDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a service, date and preferred time, and enter your contact details to continue.'**
+  String get completeRequiredDetails;
+
+  /// No description provided for @appointmentRequestUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment requests cannot be submitted in the app yet. Your details have not been sent or saved.'**
+  String get appointmentRequestUnavailable;
+
+  /// No description provided for @upcomingAppointments.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming appointments'**
+  String get upcomingAppointments;
+
+  /// No description provided for @appointmentsEmptyState.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed appointments will appear here when appointment information is available.'**
+  String get appointmentsEmptyState;
 
   /// No description provided for @therapyServices.
   ///
@@ -449,7 +599,7 @@ abstract class AppLocalizations {
   /// No description provided for @aboutDescription.
   ///
   /// In en, this message translates to:
-  /// **'An app for exploring Hijama therapy services and training information.'**
+  /// **'An app for exploring cupping therapy services and training information.'**
   String get aboutDescription;
 
   /// No description provided for @loadingAccount.

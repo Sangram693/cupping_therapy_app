@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../l10n/generated/app_localizations.dart';
 import '../constants/app_dimensions.dart';
-import '../services/app_color_service.dart';
 
 class AppBackButton extends StatelessWidget {
   const AppBackButton({required this.fallbackRouteName, super.key});
@@ -18,7 +17,7 @@ class AppBackButton extends StatelessWidget {
         minWidth: AppDimensions.buttonHeight,
         minHeight: AppDimensions.buttonHeight,
       ),
-      color: AppColors.primary,
+      color: Theme.of(context).colorScheme.primary,
       onPressed: () {
         if (context.canPop()) {
           context.pop();

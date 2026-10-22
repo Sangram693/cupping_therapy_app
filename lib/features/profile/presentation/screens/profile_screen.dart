@@ -198,7 +198,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       applicationName: l10n.appName,
       applicationIcon: const Icon(
         Icons.spa_outlined,
-        color: AppColors.primary,
+        color: AppColors.secondary,
         size: AppDimensions.iconLarge,
       ),
       children: [Text(l10n.aboutDescription)],
@@ -250,7 +250,7 @@ class _ProfileSummary extends StatelessWidget {
                 isSignedIn
                     ? Icons.person_outline_rounded
                     : Icons.person_add_alt_1_outlined,
-                color: AppColors.primary,
+                color: Theme.of(context).colorScheme.primary,
                 size: AppDimensions.iconLarge,
               ),
             ),
@@ -272,7 +272,7 @@ class _ProfileSummary extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: loadError == null
                           ? colorScheme.onSurfaceVariant
-                          : AppColors.error,
+                          : colorScheme.error,
                     ),
                   ),
                 ],

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/services/app_color_service.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../../l10n/generated/app_localizations.dart';
@@ -122,7 +121,7 @@ class _AuthFormState extends State<AuthForm> {
             value: _acceptedTerms,
             contentPadding: EdgeInsets.zero,
             controlAffinity: ListTileControlAffinity.leading,
-            activeColor: AppColors.primary,
+            activeColor: colorScheme.primary,
             title: Text(
               l10n.termsAndPrivacy,
               style: TextStyle(color: colorScheme.onSurfaceVariant),
@@ -139,7 +138,7 @@ class _AuthFormState extends State<AuthForm> {
               padding: EdgeInsets.only(left: 12, bottom: 8),
               child: Text(
                 l10n.termsRequired,
-                style: TextStyle(color: AppColors.error, fontSize: 12),
+                style: TextStyle(color: colorScheme.error, fontSize: 12),
               ),
             ),
           const SizedBox(height: 12),

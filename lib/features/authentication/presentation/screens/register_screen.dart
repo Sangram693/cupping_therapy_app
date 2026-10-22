@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/route_names.dart';
-import '../../../../core/services/app_color_service.dart';
 import '../../../../core/widgets/app_back_button.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../widgets/auth_form.dart';
@@ -65,7 +64,7 @@ class RegisterScreen extends StatelessWidget {
                     l10n.createYourAccount,
                     textAlign: TextAlign.center,
                     style: textTheme.headlineSmall?.copyWith(
-                      color: AppColors.primary,
+                      color: colorScheme.primary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

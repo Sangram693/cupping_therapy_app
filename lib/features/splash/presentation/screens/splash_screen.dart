@@ -126,10 +126,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                                 fit: BoxFit.contain,
                                 semanticLabel: l10n.logoLabel(l10n.appName),
                                 errorBuilder: (context, error, stackTrace) =>
-                                    const Center(
+                                    Center(
                                       child: Icon(
                                         Icons.spa_outlined,
-                                        color: AppColors.primary,
+                                        color: colorScheme.primary,
                                         size: AppDimensions.iconXLarge,
                                       ),
                                     ),
@@ -148,7 +148,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.headlineMedium
                                 ?.copyWith(
-                                  color: AppColors.primary,
+                                  color: colorScheme.primary,
                                   fontWeight: FontWeight.w800,
                                   letterSpacing: 0.2,
                                 ),
@@ -267,11 +267,13 @@ class _SessionError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Column(
       children: [
-        const Icon(
+        Icon(
           Icons.cloud_off_outlined,
-          color: AppColors.error,
+          color: colorScheme.error,
           size: AppDimensions.iconLarge,
         ),
         const SizedBox(height: AppDimensions.spacing12),
@@ -279,7 +281,7 @@ class _SessionError extends StatelessWidget {
           AppLocalizations.of(context)!.sessionRestoreFailed,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyLarge
-              ?.copyWith(color: AppColors.error, fontWeight: FontWeight.w600),
+              ?.copyWith(color: colorScheme.error, fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: AppDimensions.spacing12),
         FilledButton.icon(
@@ -287,7 +289,8 @@ class _SessionError extends StatelessWidget {
           icon: const Icon(Icons.refresh),
           label: Text(AppLocalizations.of(context)!.retry),
           style: FilledButton.styleFrom(
-            backgroundColor: AppColors.primary,
+            backgroundColor: colorScheme.primary,
+            foregroundColor: colorScheme.onPrimary,
             minimumSize: const Size(0, AppDimensions.buttonHeight),
           ),
         ),

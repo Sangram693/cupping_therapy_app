@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_dimensions.dart';
-import '../../../../core/services/app_color_service.dart';
 
 class AccountMenuTile extends StatelessWidget {
   const AccountMenuTile({
@@ -23,7 +22,7 @@ class AccountMenuTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final foregroundColor = isDestructive
-        ? AppColors.error
+        ? colorScheme.error
         : colorScheme.onSurface;
 
     return Card(

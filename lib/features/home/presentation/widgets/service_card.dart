@@ -40,7 +40,7 @@ class ServiceCard extends StatelessWidget {
                 ),
                 child: Icon(
                   icon,
-                  color: AppColors.primary,
+                  color: colorScheme.primary,
                   size: AppDimensions.iconMedium,
                 ),
               ),
