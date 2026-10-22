@@ -1,26 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../features/settings/presentation/providers/locale_provider.dart';
 import '../../../../app/router/route_names.dart';
 import '../../../../core/widgets/app_back_button.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../widgets/auth_form.dart';
+import '../providers/auth_provider.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends ConsumerWidget {
   const RegisterScreen({super.key});
 
-  void _showBackendNotice(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(l10n.registrationUnavailable),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
     final l10n = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
@@ -79,7 +72,28 @@ class RegisterScreen extends StatelessWidget {
                   const SizedBox(height: 28),
                   AuthForm(
                     submitLabel: l10n.createAccount,
-                    onSubmit: () => _showBackendNotice(context),
+                    onSubmit:
+                        ({
+                          required name,
+                          email,
+                          phone,
+                          required password,
+                          required passwordConfirmation,
+                        }) async {
+                          await ref
+                              .read(authStateProvider.notifier)
+                              .register(
+                                name: name,
+                                email: email,
+                                phone: phone,
+                                password: password,
+                                passwordConfirmation: passwordConfirmation,
+                                preferredLocale: ref
+                                    .read(localeProvider)
+                                    .languageCode,
+                              );
+                          if (context.mounted) context.goNamed(RouteNames.home);
+                        },
                   ),
                   const SizedBox(height: 16),
                   Wrap(

@@ -4,7 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:cupping_therapy/app/theme/app_theme.dart';
+import 'package:cupping_therapy/core/network/paginated_result.dart';
 import 'package:cupping_therapy/features/appointments/presentation/screens/appointments_screen.dart';
+import 'package:cupping_therapy/features/therapy/domain/entities/therapy_service_entity.dart';
+import 'package:cupping_therapy/features/therapy/presentation/providers/therapy_provider.dart';
 import 'package:cupping_therapy/features/settings/presentation/providers/locale_provider.dart';
 import 'package:cupping_therapy/features/settings/presentation/providers/theme_provider.dart';
 import 'package:cupping_therapy/l10n/generated/app_localizations.dart';
@@ -31,6 +34,21 @@ class _AppointmentsTestApp extends ConsumerWidget {
   }
 }
 
+final _appointmentServicePage = PaginatedResult<TherapyServiceEntity>(
+  data: const [
+    TherapyServiceEntity(
+      id: 3,
+      slug: 'sample',
+      nameEn: 'Sample service',
+      nameBn: 'নমুনা সেবা',
+    ),
+  ],
+  currentPage: 1,
+  lastPage: 1,
+  perPage: 15,
+  total: 1,
+);
+
 void main() {
   testWidgets('appointments screen updates for locale and theme changes', (
     tester,
@@ -39,7 +57,13 @@ void main() {
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
-    final container = ProviderContainer();
+    final container = ProviderContainer(
+      overrides: [
+        therapyServicesProvider.overrideWith(
+          (ref, page) async => _appointmentServicePage,
+        ),
+      ],
+    );
     addTearDown(container.dispose);
     container.read(localeProvider.notifier).state = const Locale('en');
 
@@ -58,7 +82,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('আপনার অ্যাপয়েন্টমেন্টের অনুরোধ জানান'), findsOneWidget);
-    expect(find.text('Ayesha'), findsNWidgets(2));
+    expect(find.text('Ayesha'), findsOneWidget);
 
     await container.read(themeProvider.notifier).setThemeMode(ThemeMode.dark);
     await tester.pumpAndSettle();
@@ -91,7 +115,16 @@ void main() {
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
-    await tester.pumpWidget(const ProviderScope(child: _AppointmentsTestApp()));
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          therapyServicesProvider.overrideWith(
+            (ref, page) async => _appointmentServicePage,
+          ),
+        ],
+        child: const _AppointmentsTestApp(),
+      ),
+    );
     await tester.pumpAndSettle();
 
     final requestButton = tester.widget<FilledButton>(

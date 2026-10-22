@@ -20,39 +20,36 @@ import 'package:cupping_therapy/features/settings/presentation/screens/settings_
 import 'package:cupping_therapy/features/settings/presentation/providers/theme_provider.dart';
 import 'package:cupping_therapy/features/authentication/presentation/widgets/auth_form.dart';
 import 'package:cupping_therapy/features/authentication/presentation/screens/login_screen.dart';
+import 'package:cupping_therapy/features/authentication/domain/entities/user_entity.dart';
+import 'package:cupping_therapy/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:cupping_therapy/features/home/presentation/screens/home_screen.dart';
 import 'package:cupping_therapy/features/profile/presentation/screens/profile_screen.dart';
 import 'package:cupping_therapy/l10n/generated/app_localizations.dart';
 
 class FakeAuthStorage implements AuthStorage {
-  FakeAuthStorage({this.isLoggedIn = false});
+  FakeAuthStorage({this.isLoggedIn = false}) {
+    if (isLoggedIn) token = 'test-token';
+  }
 
   bool isLoggedIn;
-  RememberedCredentials? credentials;
+  String? token;
 
   @override
-  Future<bool> hasActiveSession() async => isLoggedIn;
+  Future<bool> hasActiveSession() async => token != null;
 
   @override
-  Future<void> setSessionActive(bool isActive) async {
-    isLoggedIn = isActive;
+  Future<String?> readToken() async => token;
+
+  @override
+  Future<void> saveToken(String value) async {
+    token = value;
+    isLoggedIn = true;
   }
 
   @override
-  Future<RememberedCredentials?> readRememberedCredentials() async =>
-      credentials;
-
-  @override
-  Future<void> saveRememberedCredentials({
-    required String email,
-    required String password,
-  }) async {
-    credentials = RememberedCredentials(email: email, password: password);
-  }
-
-  @override
-  Future<void> clearRememberedCredentials() async {
-    credentials = null;
+  Future<void> clearToken() async {
+    token = null;
+    isLoggedIn = false;
   }
 }
 
@@ -69,6 +66,52 @@ class RetryAuthStorage extends FakeAuthStorage {
     }
     return super.hasActiveSession();
   }
+}
+
+class FakeAuthRepository implements AuthRepository {
+  FakeAuthRepository(this.storage);
+
+  final FakeAuthStorage storage;
+  static const _user = UserEntity(
+    id: '1',
+    name: 'Test User',
+    email: 'user@example.com',
+  );
+
+  @override
+  Future<UserEntity> login({
+    required String identifier,
+    required String password,
+  }) async {
+    await storage.saveToken('test-token');
+    return _user;
+  }
+
+  @override
+  Future<UserEntity> register({
+    required String name,
+    String? email,
+    String? phone,
+    required String password,
+    required String passwordConfirmation,
+    required String preferredLocale,
+  }) async {
+    await storage.saveToken('test-token');
+    return _user;
+  }
+
+  @override
+  Future<UserEntity?> restoreSession() async =>
+      await storage.hasActiveSession() ? _user : null;
+
+  @override
+  Future<void> logout() => storage.clearToken();
+
+  @override
+  Future<UserEntity> getProfile() async => _user;
+
+  @override
+  Future<UserEntity> updateProfile(Map<String, dynamic> changes) async => _user;
 }
 
 class _SettingsTestApp extends ConsumerWidget {
@@ -241,7 +284,12 @@ void main() {
     final authStorage = FakeAuthStorage();
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [authStorageProvider.overrideWithValue(authStorage)],
+        overrides: [
+          authStorageProvider.overrideWithValue(authStorage),
+          authRepositoryProvider.overrideWithValue(
+            FakeAuthRepository(authStorage),
+          ),
+        ],
         child: const App(),
       ),
     );
@@ -259,7 +307,12 @@ void main() {
     final authStorage = FakeAuthStorage(isLoggedIn: true);
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [authStorageProvider.overrideWithValue(authStorage)],
+        overrides: [
+          authStorageProvider.overrideWithValue(authStorage),
+          authRepositoryProvider.overrideWithValue(
+            FakeAuthRepository(authStorage),
+          ),
+        ],
         child: const App(),
       ),
     );
@@ -276,7 +329,12 @@ void main() {
     final authStorage = RetryAuthStorage();
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [authStorageProvider.overrideWithValue(authStorage)],
+        overrides: [
+          authStorageProvider.overrideWithValue(authStorage),
+          authRepositoryProvider.overrideWithValue(
+            FakeAuthRepository(authStorage),
+          ),
+        ],
         child: const App(),
       ),
     );
@@ -293,7 +351,7 @@ void main() {
     expect(find.text('Welcome to Cupping Therapy'), findsOneWidget);
   });
 
-  testWidgets('Successful login saves credentials and opens home', (
+  testWidgets('Successful login stores only the bearer token and opens home', (
     tester,
   ) async {
     final authStorage = FakeAuthStorage();
@@ -315,7 +373,12 @@ void main() {
 
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [authStorageProvider.overrideWithValue(authStorage)],
+        overrides: [
+          authStorageProvider.overrideWithValue(authStorage),
+          authRepositoryProvider.overrideWithValue(
+            FakeAuthRepository(authStorage),
+          ),
+        ],
         child: MaterialApp.router(
           routerConfig: router,
           supportedLocales: AppLocalizations.supportedLocales,
@@ -329,14 +392,12 @@ void main() {
       'user@example.com',
     );
     await tester.enterText(find.byType(TextFormField).at(1), 'password123');
-    await tester.tap(find.byType(Checkbox));
     await tester.tap(find.text('Sign in'));
     await tester.pumpAndSettle();
 
     expect(find.text('Welcome to Cupping Therapy'), findsOneWidget);
     expect(await authStorage.hasActiveSession(), isTrue);
-    expect(authStorage.credentials?.email, 'user@example.com');
-    expect(authStorage.credentials?.password, 'password123');
+    expect(authStorage.token, 'test-token');
   });
 
   testWidgets('Guest profile offers login and register without fake details', (
@@ -345,7 +406,12 @@ void main() {
     final authStorage = FakeAuthStorage();
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [authStorageProvider.overrideWithValue(authStorage)],
+        overrides: [
+          authStorageProvider.overrideWithValue(authStorage),
+          authRepositoryProvider.overrideWithValue(
+            FakeAuthRepository(authStorage),
+          ),
+        ],
         child: MaterialApp(
           supportedLocales: AppLocalizations.supportedLocales,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -385,7 +451,12 @@ void main() {
 
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [authStorageProvider.overrideWithValue(authStorage)],
+        overrides: [
+          authStorageProvider.overrideWithValue(authStorage),
+          authRepositoryProvider.overrideWithValue(
+            FakeAuthRepository(authStorage),
+          ),
+        ],
         child: MaterialApp.router(
           routerConfig: router,
           supportedLocales: AppLocalizations.supportedLocales,
@@ -394,7 +465,11 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text('Log out'));
+    await tester.scrollUntilVisible(
+      find.text('Log out'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
     await tester.tap(find.text('Log out'));
     await tester.pumpAndSettle();
 
@@ -405,7 +480,11 @@ void main() {
     await tester.pumpAndSettle();
     expect(await authStorage.hasActiveSession(), isTrue);
 
-    await tester.ensureVisible(find.text('Log out'));
+    await tester.scrollUntilVisible(
+      find.text('Log out'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
     await tester.tap(find.text('Log out'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Log out').last);
@@ -428,7 +507,16 @@ void main() {
           body: SingleChildScrollView(
             child: AuthForm(
               submitLabel: 'Create account',
-              onSubmit: () => submitted = true,
+              onSubmit:
+                  ({
+                    required String name,
+                    String? email,
+                    String? phone,
+                    required String password,
+                    required String passwordConfirmation,
+                  }) async {
+                    submitted = true;
+                  },
             ),
           ),
         ),
@@ -440,7 +528,10 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Full name is required.'), findsOneWidget);
-    expect(find.text('Email is required.'), findsOneWidget);
+    expect(
+      find.text('Enter an email address or phone number.'),
+      findsOneWidget,
+    );
     expect(find.text('Password is required.'), findsOneWidget);
     expect(find.text('Please accept the terms to continue.'), findsOneWidget);
     expect(submitted, isFalse);

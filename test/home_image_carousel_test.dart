@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
@@ -7,6 +8,8 @@ import 'package:cupping_therapy/app/router/route_names.dart';
 import 'package:cupping_therapy/app/theme/app_theme.dart';
 import 'package:cupping_therapy/features/home/presentation/screens/home_image_viewer_screen.dart';
 import 'package:cupping_therapy/features/home/presentation/widgets/home_image_carousel.dart';
+import 'package:cupping_therapy/features/home/domain/entities/home_gallery_image_entity.dart';
+import 'package:cupping_therapy/features/home/presentation/providers/home_provider.dart';
 import 'package:cupping_therapy/l10n/generated/app_localizations.dart';
 
 class _CarouselTestApp extends StatefulWidget {
@@ -26,10 +29,10 @@ class _CarouselTestAppState extends State<_CarouselTestApp> {
         builder: (context, state) => const Scaffold(body: HomeImageCarousel()),
       ),
       GoRoute(
-        path: '/${RouteNames.home}/image/:index',
+        path: '/${RouteNames.home}/image/:mediaId',
         name: RouteNames.homeImageViewer,
         builder: (context, state) => HomeImageViewerScreen(
-          initialIndex: int.parse(state.pathParameters['index']!),
+          initialMediaId: state.pathParameters['mediaId']!,
           onPageChanged: state.extra is ValueChanged<int>
               ? state.extra as ValueChanged<int>
               : null,
@@ -69,10 +72,27 @@ void main() {
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
 
-    await tester.pumpWidget(const _CarouselTestApp());
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          homeGalleryProvider.overrideWith(
+            (ref) async => List.generate(
+              10,
+              (index) => HomeGalleryImageEntity(
+                id: '${index + 1}',
+                mediaId: '${index + 1}',
+                url: 'https://example.test/image-${index + 1}.jpg',
+                sortOrder: index,
+              ),
+            ),
+          ),
+        ],
+        child: const _CarouselTestApp(),
+      ),
+    );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(const ValueKey('home-carousel-image-0')));
+    await tester.tap(find.byKey(const ValueKey('home-gallery-media-1')));
     await tester.pumpAndSettle();
     expect(find.byTooltip('Close image viewer'), findsOneWidget);
     expect(find.text('1 / 10'), findsOneWidget);

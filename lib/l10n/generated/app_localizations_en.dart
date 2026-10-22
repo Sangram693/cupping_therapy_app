@@ -545,4 +545,97 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get consultationOptions =>
       'Ask us about available consultation options.';
+
+  @override
+  String get noServicesAvailable =>
+      'No therapy services are currently available.';
+
+  @override
+  String get noProgramsAvailable =>
+      'No training programs are currently available.';
+
+  @override
+  String get trainingEnrollmentsEmpty =>
+      'You have no training enrollment requests yet.';
+
+  @override
+  String get loadMore => 'Load more';
+
+  @override
+  String get enroll => 'Send enrollment inquiry';
+
+  @override
+  String get trainingProgramDetails => 'Program details';
+
+  @override
+  String get loginIdentifier => 'Email or phone';
+
+  @override
+  String get identifierHint => 'Enter your email or phone number';
+
+  @override
+  String get phoneOptional => 'Phone number (optional)';
+
+  @override
+  String get emailOptional => 'Email (optional)';
+
+  @override
+  String get emailOrPhoneRequired => 'Enter an email address or phone number.';
+
+  @override
+  String get appointmentSubmissionFailed =>
+      'The appointment request could not be submitted.';
+
+  @override
+  String get appointmentRequestSent =>
+      'Your appointment request was sent. Our team will contact you.';
+
+  @override
+  String appointmentSubmitted(String reference, String status) {
+    return 'Appointment request sent. Reference: $reference. Status: $status.';
+  }
+
+  @override
+  String durationMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String get selectPreferredDateTime => 'Select a preferred date and time';
+
+  @override
+  String get customerSchedulingNote => 'Scheduling note (optional)';
+
+  @override
+  String get nonSensitiveSchedulingNote =>
+      'Do not include sensitive health information.';
+
+  @override
+  String get cancelAppointment => 'Cancel appointment';
+
+  @override
+  String enrollmentStatus(String status) {
+    return 'Enrollment status: $status';
+  }
+
+  @override
+  String get contactSubject => 'Subject (optional)';
+
+  @override
+  String get contactMessage => 'Message';
+
+  @override
+  String get sendInquiry => 'Send inquiry';
+
+  @override
+  String get inquirySent => 'Your inquiry was sent.';
+
+  @override
+  String get contactInquiryFailed => 'The inquiry could not be sent.';
+
+  @override
+  String get editProfile => 'Edit profile';
+
+  @override
+  String get saveChanges => 'Save changes';
 }

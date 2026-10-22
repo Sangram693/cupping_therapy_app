@@ -224,5 +224,48 @@
   "unableToRestoreSession": "Unable to restore your session.",
   "passwordVisibility": "Toggle password visibility",
   "contactDetails": "Contact details",
-  "consultationOptions": "Ask us about available consultation options."
+  "consultationOptions": "Ask us about available consultation options.",
+  "noServicesAvailable": "No therapy services are currently available.",
+  "noProgramsAvailable": "No training programs are currently available.",
+  "trainingEnrollmentsEmpty": "You have no training enrollment requests yet.",
+  "loadMore": "Load more",
+  "enroll": "Send enrollment inquiry",
+  "trainingProgramDetails": "Program details",
+  "loginIdentifier": "Email or phone",
+  "identifierHint": "Enter your email or phone number",
+  "phoneOptional": "Phone number (optional)",
+  "emailOptional": "Email (optional)",
+  "emailOrPhoneRequired": "Enter an email address or phone number.",
+  "appointmentSubmissionFailed": "The appointment request could not be submitted.",
+  "appointmentRequestSent": "Your appointment request was sent. Our team will contact you.",
+  "appointmentSubmitted": "Appointment request sent. Reference: {reference}. Status: {status}.",
+  "@appointmentSubmitted": {
+    "placeholders": {
+      "reference": {"type": "String"},
+      "status": {"type": "String"}
+    }
+  },
+  "durationMinutes": "{minutes} min",
+  "@durationMinutes": {
+    "placeholders": {
+      "minutes": {"type": "int"}
+    }
+  },
+  "selectPreferredDateTime": "Select a preferred date and time",
+  "customerSchedulingNote": "Scheduling note (optional)",
+  "nonSensitiveSchedulingNote": "Do not include sensitive health information.",
+  "cancelAppointment": "Cancel appointment",
+  "enrollmentStatus": "Enrollment status: {status}",
+  "@enrollmentStatus": {
+    "placeholders": {
+      "status": {"type": "String"}
+    }
+  },
+  "contactSubject": "Subject (optional)",
+  "contactMessage": "Message",
+  "sendInquiry": "Send inquiry",
+  "inquirySent": "Your inquiry was sent.",
+  "contactInquiryFailed": "The inquiry could not be sent.",
+  "editProfile": "Edit profile",
+  "saveChanges": "Save changes"
 }

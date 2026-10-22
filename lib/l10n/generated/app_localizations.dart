@@ -1075,6 +1075,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ask us about available consultation options.'**
   String get consultationOptions;
+
+  /// No description provided for @noServicesAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No therapy services are currently available.'**
+  String get noServicesAvailable;
+
+  /// No description provided for @noProgramsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No training programs are currently available.'**
+  String get noProgramsAvailable;
+
+  /// No description provided for @trainingEnrollmentsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no training enrollment requests yet.'**
+  String get trainingEnrollmentsEmpty;
+
+  /// No description provided for @loadMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Load more'**
+  String get loadMore;
+
+  /// No description provided for @enroll.
+  ///
+  /// In en, this message translates to:
+  /// **'Send enrollment inquiry'**
+  String get enroll;
+
+  /// No description provided for @trainingProgramDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Program details'**
+  String get trainingProgramDetails;
+
+  /// No description provided for @loginIdentifier.
+  ///
+  /// In en, this message translates to:
+  /// **'Email or phone'**
+  String get loginIdentifier;
+
+  /// No description provided for @identifierHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email or phone number'**
+  String get identifierHint;
+
+  /// No description provided for @phoneOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number (optional)'**
+  String get phoneOptional;
+
+  /// No description provided for @emailOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Email (optional)'**
+  String get emailOptional;
+
+  /// No description provided for @emailOrPhoneRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an email address or phone number.'**
+  String get emailOrPhoneRequired;
+
+  /// No description provided for @appointmentSubmissionFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The appointment request could not be submitted.'**
+  String get appointmentSubmissionFailed;
+
+  /// No description provided for @appointmentRequestSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Your appointment request was sent. Our team will contact you.'**
+  String get appointmentRequestSent;
+
+  /// No description provided for @appointmentSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment request sent. Reference: {reference}. Status: {status}.'**
+  String appointmentSubmitted(String reference, String status);
+
+  /// No description provided for @durationMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String durationMinutes(int minutes);
+
+  /// No description provided for @selectPreferredDateTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a preferred date and time'**
+  String get selectPreferredDateTime;
+
+  /// No description provided for @customerSchedulingNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduling note (optional)'**
+  String get customerSchedulingNote;
+
+  /// No description provided for @nonSensitiveSchedulingNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Do not include sensitive health information.'**
+  String get nonSensitiveSchedulingNote;
+
+  /// No description provided for @cancelAppointment.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel appointment'**
+  String get cancelAppointment;
+
+  /// No description provided for @enrollmentStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Enrollment status: {status}'**
+  String enrollmentStatus(String status);
+
+  /// No description provided for @contactSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Subject (optional)'**
+  String get contactSubject;
+
+  /// No description provided for @contactMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get contactMessage;
+
+  /// No description provided for @sendInquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Send inquiry'**
+  String get sendInquiry;
+
+  /// No description provided for @inquirySent.
+  ///
+  /// In en, this message translates to:
+  /// **'Your inquiry was sent.'**
+  String get inquirySent;
+
+  /// No description provided for @contactInquiryFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The inquiry could not be sent.'**
+  String get contactInquiryFailed;
+
+  /// No description provided for @editProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get editProfile;
+
+  /// No description provided for @saveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get saveChanges;
 }
 
 class _AppLocalizationsDelegate

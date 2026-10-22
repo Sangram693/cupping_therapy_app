@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../app/di/providers.dart';
 import '../../../../app/router/route_names.dart';
 import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/services/app_color_service.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../../authentication/presentation/providers/auth_provider.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -39,10 +39,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         await Future<void>.delayed(const Duration(seconds: 2));
         _hasWaitedForMinimumDuration = true;
       }
-      final isLoggedIn = await ref.read(authStorageProvider).hasActiveSession();
+      final user = await ref.read(authStateProvider.notifier).restoreSession();
       if (mounted) {
         _hasNavigated = true;
-        context.goNamed(isLoggedIn ? RouteNames.home : RouteNames.login);
+        context.goNamed(user != null ? RouteNames.home : RouteNames.login);
       }
     } catch (_) {
       if (mounted) {

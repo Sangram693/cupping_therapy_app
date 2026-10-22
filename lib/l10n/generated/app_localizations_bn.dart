@@ -547,4 +547,97 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get consultationOptions =>
       'পরামর্শের সুযোগ সম্পর্কে আমাদের জিজ্ঞাসা করুন।';
+
+  @override
+  String get noServicesAvailable =>
+      'বর্তমানে কোনো থেরাপি সেবা পাওয়া যাচ্ছে না।';
+
+  @override
+  String get noProgramsAvailable =>
+      'বর্তমানে কোনো প্রশিক্ষণ কর্মসূচি পাওয়া যাচ্ছে না।';
+
+  @override
+  String get trainingEnrollmentsEmpty =>
+      'আপনার কোনো প্রশিক্ষণ ভর্তির অনুরোধ নেই।';
+
+  @override
+  String get loadMore => 'আরও দেখুন';
+
+  @override
+  String get enroll => 'প্রশিক্ষণে ভর্তির অনুরোধ পাঠান';
+
+  @override
+  String get trainingProgramDetails => 'প্রশিক্ষণের বিস্তারিত';
+
+  @override
+  String get loginIdentifier => 'ইমেইল বা ফোন';
+
+  @override
+  String get identifierHint => 'আপনার ইমেইল বা ফোন নম্বর লিখুন';
+
+  @override
+  String get phoneOptional => 'ফোন নম্বর (ঐচ্ছিক)';
+
+  @override
+  String get emailOptional => 'ইমেইল (ঐচ্ছিক)';
+
+  @override
+  String get emailOrPhoneRequired => 'ইমেইল ঠিকানা অথবা ফোন নম্বর লিখুন।';
+
+  @override
+  String get appointmentSubmissionFailed =>
+      'অ্যাপয়েন্টমেন্টের অনুরোধ পাঠানো যায়নি।';
+
+  @override
+  String get appointmentRequestSent =>
+      'আপনার অ্যাপয়েন্টমেন্টের অনুরোধ পাঠানো হয়েছে। আমাদের দল আপনার সঙ্গে যোগাযোগ করবে।';
+
+  @override
+  String appointmentSubmitted(String reference, String status) {
+    return 'অ্যাপয়েন্টমেন্টের অনুরোধ পাঠানো হয়েছে। রেফারেন্স: $reference। অবস্থা: $status।';
+  }
+
+  @override
+  String durationMinutes(int minutes) {
+    return '$minutes মিনিট';
+  }
+
+  @override
+  String get selectPreferredDateTime => 'পছন্দের তারিখ ও সময় নির্বাচন করুন';
+
+  @override
+  String get customerSchedulingNote => 'সময়সূচি সংক্রান্ত নোট (ঐচ্ছিক)';
+
+  @override
+  String get nonSensitiveSchedulingNote =>
+      'সংবেদনশীল স্বাস্থ্য-তথ্য লিখবেন না।';
+
+  @override
+  String get cancelAppointment => 'অ্যাপয়েন্টমেন্ট বাতিল করুন';
+
+  @override
+  String enrollmentStatus(String status) {
+    return 'ভর্তির অবস্থা: $status';
+  }
+
+  @override
+  String get contactSubject => 'বিষয় (ঐচ্ছিক)';
+
+  @override
+  String get contactMessage => 'বার্তা';
+
+  @override
+  String get sendInquiry => 'অনুরোধ পাঠান';
+
+  @override
+  String get inquirySent => 'আপনার অনুরোধ পাঠানো হয়েছে।';
+
+  @override
+  String get contactInquiryFailed => 'অনুরোধটি পাঠানো যায়নি।';
+
+  @override
+  String get editProfile => 'প্রোফাইল সম্পাদনা';
+
+  @override
+  String get saveChanges => 'পরিবর্তন সংরক্ষণ করুন';
 }

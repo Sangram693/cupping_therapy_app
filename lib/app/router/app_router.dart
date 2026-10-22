@@ -32,12 +32,11 @@ class AppRouter {
         builder: (context, state) => const HomeScreen(),
       ),
       GoRoute(
-        path: '/${RouteNames.home}/image/:index',
+        path: '/${RouteNames.home}/image/:mediaId',
         name: RouteNames.homeImageViewer,
         builder: (context, state) {
-          final index = int.tryParse(state.pathParameters['index'] ?? '');
           return HomeImageViewerScreen(
-            initialIndex: index ?? 0,
+            initialMediaId: state.pathParameters['mediaId'] ?? '',
             onPageChanged: state.extra is ValueChanged<int>
                 ? state.extra as ValueChanged<int>
                 : null,

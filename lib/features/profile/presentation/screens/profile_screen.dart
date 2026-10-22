@@ -8,6 +8,7 @@ import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/services/app_color_service.dart';
 import '../../../../core/widgets/app_back_button.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../../authentication/presentation/providers/auth_provider.dart';
 import '../widgets/account_menu_tile.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -20,6 +21,8 @@ class ProfileScreen extends ConsumerStatefulWidget {
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   bool? _isSignedIn;
   String? _email;
+  String? _name;
+  String? _phone;
   String? _loadError;
   bool _isLoggingOut = false;
 
@@ -30,22 +33,26 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Future<void> _loadAccount() async {
+    var hasToken = false;
     try {
       final authStorage = ref.read(authStorageProvider);
-      final isSignedIn = await authStorage.hasActiveSession();
-      final credentials = isSignedIn
-          ? await authStorage.readRememberedCredentials()
+      hasToken = await authStorage.hasActiveSession();
+      final user = hasToken
+          ? await ref.read(authStateProvider.notifier).refreshProfile()
           : null;
       if (!mounted) return;
 
       setState(() {
-        _isSignedIn = isSignedIn;
-        _email = credentials?.email;
+        _isSignedIn = user != null;
+        _email = user?.email;
+        _name = user?.name;
+        _phone = user?.phone;
         _loadError = null;
       });
     } catch (error) {
       if (!mounted) return;
       setState(() {
+        _isSignedIn = hasToken;
         _loadError = AppLocalizations.of(context)!.unableToLoadAccount;
       });
     }
@@ -75,21 +82,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
     setState(() => _isLoggingOut = true);
     try {
-      await ref.read(authStorageProvider).setSessionActive(false);
-      if (mounted) {
-        context.goNamed(RouteNames.login);
-      }
+      await ref.read(authStateProvider.notifier).logout();
     } catch (error) {
       if (mounted) {
-        setState(() => _isLoggingOut = false);
         ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
-          ..showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context)!.unableToLogout),
-            ),
-          );
+          ..showSnackBar(SnackBar(content: Text(error.toString())));
       }
+    } finally {
+      if (mounted) context.goNamed(RouteNames.login);
     }
   }
 
@@ -116,12 +117,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   isLoading: _isSignedIn == null && _loadError == null,
                   isSignedIn: _isSignedIn ?? false,
                   email: _email,
+                  name: _name,
                   loadError: _loadError,
                 ),
                 const SizedBox(height: AppDimensions.spacing24),
                 _SectionLabel(title: l10n.yourAccount),
                 const SizedBox(height: AppDimensions.spacing8),
                 if (_isSignedIn == true) ...[
+                  AccountMenuTile(
+                    icon: Icons.edit_outlined,
+                    title: l10n.editProfile,
+                    onTap: _editProfile,
+                  ),
                   AccountMenuTile(
                     icon: Icons.event_available_outlined,
                     title: l10n.myAppointments,
@@ -184,6 +191,83 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
+  Future<void> _editProfile() async {
+    final l10n = AppLocalizations.of(context)!;
+    final formKey = GlobalKey<FormState>();
+    final name = TextEditingController(text: _name ?? '');
+    final email = TextEditingController(text: _email ?? '');
+    final phone = TextEditingController(text: _phone ?? '');
+    try {
+      final changes = await showDialog<Map<String, dynamic>>(
+        context: context,
+        builder: (dialogContext) => AlertDialog(
+          title: Text(l10n.editProfile),
+          content: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: name,
+                  decoration: InputDecoration(labelText: l10n.fullName),
+                  validator: (value) => value == null || value.trim().isEmpty
+                      ? l10n.fieldRequired(l10n.fullName)
+                      : null,
+                ),
+                TextFormField(
+                  controller: email,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(labelText: l10n.emailOptional),
+                ),
+                TextFormField(
+                  controller: phone,
+                  keyboardType: TextInputType.phone,
+                  decoration: InputDecoration(labelText: l10n.phoneOptional),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(l10n.cancel),
+            ),
+            FilledButton(
+              onPressed: () {
+                if (formKey.currentState?.validate() != true) return;
+                Navigator.of(dialogContext).pop({
+                  'name': name.text.trim(),
+                  if (email.text.trim().isNotEmpty) 'email': email.text.trim(),
+                  if (phone.text.trim().isNotEmpty) 'phone': phone.text.trim(),
+                });
+              },
+              child: Text(l10n.saveChanges),
+            ),
+          ],
+        ),
+      );
+      if (changes == null || !mounted) return;
+      final updated = await ref
+          .read(authStateProvider.notifier)
+          .updateProfile(changes);
+      if (!mounted) return;
+      setState(() {
+        _name = updated.name;
+        _email = updated.email;
+        _phone = updated.phone;
+      });
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(error.toString())));
+      }
+    } finally {
+      name.dispose();
+      email.dispose();
+      phone.dispose();
+    }
+  }
+
   void _showSupportNotice() {
     final l10n = AppLocalizations.of(context)!;
     ScaffoldMessenger.of(context)
@@ -211,12 +295,14 @@ class _ProfileSummary extends StatelessWidget {
     required this.isLoading,
     required this.isSignedIn,
     required this.email,
+    required this.name,
     required this.loadError,
   });
 
   final bool isLoading;
   final bool isSignedIn;
   final String? email;
+  final String? name;
   final String? loadError;
 
   @override
@@ -226,7 +312,7 @@ class _ProfileSummary extends StatelessWidget {
     final title = isLoading
         ? l10n.loadingAccount
         : isSignedIn
-        ? l10n.yourProfile
+        ? name ?? l10n.yourProfile
         : l10n.welcomeGuest;
     final subtitle =
         loadError ??

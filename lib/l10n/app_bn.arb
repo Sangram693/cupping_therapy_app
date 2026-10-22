@@ -224,5 +224,48 @@
   "unableToRestoreSession": "আপনার সেশন পুনরুদ্ধার করা যায়নি।",
   "passwordVisibility": "পাসওয়ার্ড দেখানো বা লুকানো",
   "contactDetails": "যোগাযোগের তথ্য",
-  "consultationOptions": "পরামর্শের সুযোগ সম্পর্কে আমাদের জিজ্ঞাসা করুন।"
+  "consultationOptions": "পরামর্শের সুযোগ সম্পর্কে আমাদের জিজ্ঞাসা করুন।",
+  "noServicesAvailable": "বর্তমানে কোনো থেরাপি সেবা পাওয়া যাচ্ছে না।",
+  "noProgramsAvailable": "বর্তমানে কোনো প্রশিক্ষণ কর্মসূচি পাওয়া যাচ্ছে না।",
+  "trainingEnrollmentsEmpty": "আপনার কোনো প্রশিক্ষণ ভর্তির অনুরোধ নেই।",
+  "loadMore": "আরও দেখুন",
+  "enroll": "প্রশিক্ষণে ভর্তির অনুরোধ পাঠান",
+  "trainingProgramDetails": "প্রশিক্ষণের বিস্তারিত",
+  "loginIdentifier": "ইমেইল বা ফোন",
+  "identifierHint": "আপনার ইমেইল বা ফোন নম্বর লিখুন",
+  "phoneOptional": "ফোন নম্বর (ঐচ্ছিক)",
+  "emailOptional": "ইমেইল (ঐচ্ছিক)",
+  "emailOrPhoneRequired": "ইমেইল ঠিকানা অথবা ফোন নম্বর লিখুন।",
+  "appointmentSubmissionFailed": "অ্যাপয়েন্টমেন্টের অনুরোধ পাঠানো যায়নি।",
+  "appointmentRequestSent": "আপনার অ্যাপয়েন্টমেন্টের অনুরোধ পাঠানো হয়েছে। আমাদের দল আপনার সঙ্গে যোগাযোগ করবে।",
+  "appointmentSubmitted": "অ্যাপয়েন্টমেন্টের অনুরোধ পাঠানো হয়েছে। রেফারেন্স: {reference}। অবস্থা: {status}।",
+  "@appointmentSubmitted": {
+    "placeholders": {
+      "reference": {"type": "String"},
+      "status": {"type": "String"}
+    }
+  },
+  "durationMinutes": "{minutes} মিনিট",
+  "@durationMinutes": {
+    "placeholders": {
+      "minutes": {"type": "int"}
+    }
+  },
+  "selectPreferredDateTime": "পছন্দের তারিখ ও সময় নির্বাচন করুন",
+  "customerSchedulingNote": "সময়সূচি সংক্রান্ত নোট (ঐচ্ছিক)",
+  "nonSensitiveSchedulingNote": "সংবেদনশীল স্বাস্থ্য-তথ্য লিখবেন না।",
+  "cancelAppointment": "অ্যাপয়েন্টমেন্ট বাতিল করুন",
+  "enrollmentStatus": "ভর্তির অবস্থা: {status}",
+  "@enrollmentStatus": {
+    "placeholders": {
+      "status": {"type": "String"}
+    }
+  },
+  "contactSubject": "বিষয় (ঐচ্ছিক)",
+  "contactMessage": "বার্তা",
+  "sendInquiry": "অনুরোধ পাঠান",
+  "inquirySent": "আপনার অনুরোধ পাঠানো হয়েছে।",
+  "contactInquiryFailed": "অনুরোধটি পাঠানো যায়নি।",
+  "editProfile": "প্রোফাইল সম্পাদনা",
+  "saveChanges": "পরিবর্তন সংরক্ষণ করুন"
 }
